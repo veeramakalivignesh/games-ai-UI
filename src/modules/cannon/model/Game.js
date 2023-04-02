@@ -20,11 +20,11 @@ class Game {
     }
 
     isBlackPiece(position) {
-        return this.getPiece(position) === 'B';
+        return (this.getPiece(position) === 'B' || this.getPiece(position) === 'Tb');
     }
 
     isWhitePiece(position) {
-        return this.getPiece(position) === 'W';
+        return (this.getPiece(position) === 'W' || this.getPiece(position) === 'Tw');
     }
 
     areOpponents(position0, position1) {

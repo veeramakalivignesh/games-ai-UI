@@ -7,14 +7,14 @@ class CannonUtils {
     static NUM_COLUMNS = 8;
 
     static INITIAL_GAME_STATE = [
-        ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
+        ['Tw', 'W', 'Tw', 'W', 'Tw', 'W', 'Tw', 'W'],
         ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
         ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
         ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
         ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
         ['B', 'E', 'B', 'E', 'B', 'E', 'B', 'E'],
         ['B', 'E', 'B', 'E', 'B', 'E', 'B', 'E'],
-        ['B', 'E', 'B', 'E', 'B', 'E', 'B', 'E']
+        ['B', 'Tb', 'B', 'Tb', 'B', 'Tb', 'B', 'Tb']
     ];
 
     static INITIAL_GUIDE_STATE = [

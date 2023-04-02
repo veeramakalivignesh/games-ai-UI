@@ -9,18 +9,22 @@ function Guide({ isDark }) {
   );
 }
 
-function Soldier({ isBlack, hasGuide, isDarkGuide, selected }) {
+function Piece({ isSoldier, isBlack, hasGuide, isDarkGuide, selected }) {
 
-  let circleClass = "";
-  if (isBlack) {
-    circleClass = selected ? 'black-circle-selected' : 'black-circle';
+  let pieceClass = "";
+  if (isSoldier) {
+    if (isBlack) {
+      pieceClass = selected ? 'black-circle-selected' : 'black-circle';
+    } else {
+      pieceClass = selected ? 'white-circle-selected' : 'white-circle';
+    }
   } else {
-    circleClass = selected ? 'white-circle-selected' : 'white-circle';
+    pieceClass = isBlack ? 'black-townhall' : 'white-townhall'
   }
 
   return (
     <button
-      className={circleClass}
+      className={pieceClass}
     >
       {hasGuide ? <Guide isDark={isDarkGuide} /> : null}
     </button>
@@ -30,8 +34,9 @@ function Soldier({ isBlack, hasGuide, isDarkGuide, selected }) {
 function Square({ position, squareGameState, squareGuideState, isSoldierSelected, selectSquare, executeMove }) {
 
   let dark = (position[0] + position[1]) % 2 === 1;
-  let hasSoldier = squareGameState !== 'E';
-  let isBlackSoldier = squareGameState === 'B';
+  let hasPiece = squareGameState !== 'E';
+  let isBlackPiece = (squareGameState === 'B' || squareGameState === 'Tb');
+  let isSoldier = (squareGameState === 'B' || squareGameState === 'W')
   let hasGuide = squareGuideState !== 'N';
   let isDarkGuide = squareGuideState === 'D';
 
@@ -50,9 +55,10 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
       onClick={handleClick}
     >
       {
-        hasSoldier ?
-          <Soldier
-            isBlack={isBlackSoldier}
+        hasPiece ?
+          <Piece
+            isSoldier={isSoldier}
+            isBlack={isBlackPiece}
             hasGuide={hasGuide}
             isDarkGuide={isDarkGuide}
             selected={isSoldierSelected}
