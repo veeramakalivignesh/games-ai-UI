@@ -6,6 +6,13 @@ class CannonUtils {
     static NUM_ROWS = 8;
     static NUM_COLUMNS = 8;
 
+    static GAME_CONDITION = {
+        BLACK_WINS: "BLACK_WINS",
+        WHITE_WINS: "WHITE_WINS",
+        STALEMATE: "STALEMATE",
+        ON: "ON"
+    };
+
     static INITIAL_GAME_STATE = [
         ['Tw', 'W', 'Tw', 'W', 'Tw', 'W', 'Tw', 'W'],
         ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
@@ -101,7 +108,7 @@ class CannonUtils {
         }
     }
 
-    static isGameOver(gameState) {
+    static gameCondition(gameState) {
         let numBlackTownhalls = 0;
         let numWhiteTownhalls = 0;
 
@@ -116,7 +123,14 @@ class CannonUtils {
             }
         }
 
-        return numBlackTownhalls <= 2 || numWhiteTownhalls <= 2;
+        if (numBlackTownhalls <= 2) {
+            return this.GAME_CONDITION.WHITE_WINS;
+        }
+        if (numWhiteTownhalls <= 2) {
+            return this.GAME_CONDITION.BLACK_WINS;
+        }
+
+        return this.GAME_CONDITION.ON;
     }
 }
 

@@ -85,8 +85,8 @@ export default function Board() {
 
   const selectSquare = (position) => {
     if (isCurrentPlayer(position)) {
-      setSelectedPosition(position);
       setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
+      setSelectedPosition(position);
     } else {
       setGuideState(CannonUtils.getInitialGuideState());
       setSelectedPosition(null);
@@ -103,11 +103,16 @@ export default function Board() {
     setGameState(newGameState);
     setGuideState(CannonUtils.getInitialGuideState());
     setSelectedPosition(null);
-    if (CannonUtils.isGameOver(newGameState)) {
-      setBlackTurn(null);
-      alert("GAME OVER!!");
-    } else {
+
+    const gameCondition = CannonUtils.gameCondition(newGameState);
+    if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
       setBlackTurn(!isBlackTurn);
+    } else if (gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS){
+      setBlackTurn(null);
+      alert("!! GAME OVER --> BLACK WINS !!");
+    } else if (gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS){
+      setBlackTurn(null);
+      alert("!! GAME OVER --> WHITE WINS !!");
     }
   }
   
