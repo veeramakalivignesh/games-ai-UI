@@ -76,10 +76,21 @@ export default function Board() {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
+  const [isBlackTurn, setBlackTurn] = useState(true);
+
+  const isCurrentPlayer = (position) => {
+    return (isBlackTurn !== null) && ((isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
+      (!isBlackTurn && gameState[position[0]][position[1]] === 'W'));
+  }
 
   const selectSquare = (position) => {
-    setSelectedPosition(position);
-    setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
+    if (isCurrentPlayer(position)) {
+      setSelectedPosition(position);
+      setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
+    } else {
+      setGuideState(CannonUtils.getInitialGuideState());
+      setSelectedPosition(null);
+    }
   };
 
   const executeMove = (moveType, targetPosition) => {
@@ -88,9 +99,16 @@ export default function Board() {
       selectedPosition: selectedPosition,
       targetPosition: targetPosition
     };
-    setGameState(CannonUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict));
-    setGuideState(CannonUtils.getInitialGuideState())
+    let newGameState = CannonUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict);
+    setGameState(newGameState);
+    setGuideState(CannonUtils.getInitialGuideState());
     setSelectedPosition(null);
+    if (CannonUtils.isGameOver(newGameState)) {
+      setBlackTurn(null);
+      alert("GAME OVER!!");
+    } else {
+      setBlackTurn(!isBlackTurn);
+    }
   }
   
   const rows = []

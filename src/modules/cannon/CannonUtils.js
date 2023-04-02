@@ -100,6 +100,24 @@ class CannonUtils {
             return game.getStateAfterBomb(moveDict.targetPosition);
         }
     }
+
+    static isGameOver(gameState) {
+        let numBlackTownhalls = 0;
+        let numWhiteTownhalls = 0;
+
+        for (let row of gameState) {
+            for (let square of row) {
+                if (square === 'Tb') {
+                    numBlackTownhalls++;
+                }
+                if (square === 'Tw') {
+                    numWhiteTownhalls++;
+                }
+            }
+        }
+
+        return numBlackTownhalls <= 2 || numWhiteTownhalls <= 2;
+    }
 }
 
 export default CannonUtils;
