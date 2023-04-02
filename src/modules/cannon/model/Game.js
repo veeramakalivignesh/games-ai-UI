@@ -11,6 +11,10 @@ class Game {
         return this.state[position[0]][position[1]];
     }
 
+    updatePiece(position, piece) {
+        this.state[position[0]][position[1]] = piece;
+    }
+
     cannonExists(rearEnd, frontEnd) {
         const rearPiece = this.getPiece(rearEnd);
         const frontPiece = this.getPiece(frontEnd);
@@ -22,100 +26,132 @@ class Game {
             middlePiece === rearPiece);
     }
 
-    getCannons(position) {
-        const piece = this.getPiece(position);
-        if (piece !== 'B' && piece !== 'W') {
-            return [];
-        }
-
+    getCannonsWithRearPosition(position) {
         const cannons = [];
+        const piece = this.getPiece(position);
         const rearEnd = position;
 
         // check right
         let frontEnd = CannonUtils.addPositions(rearEnd, [0, 2]);
         if (CannonUtils.isPositionValid(frontEnd) && this.cannonExists(rearEnd, frontEnd)) {
-            cannons.push(new CannonPiece(rearEnd, frontEnd));
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
         }
 
         // check left
         frontEnd = CannonUtils.addPositions(rearEnd, [0, -2]);
         if (CannonUtils.isPositionValid(frontEnd) && this.cannonExists(rearEnd, frontEnd)) {
-            cannons.push(new CannonPiece(rearEnd, frontEnd));
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
         }
 
         // check bottom
         frontEnd = CannonUtils.addPositions(rearEnd, [2, 0]);
         if (CannonUtils.isPositionValid(frontEnd) && this.cannonExists(rearEnd, frontEnd)) {
-            cannons.push(new CannonPiece(rearEnd, frontEnd));
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
         }
 
         // check top
         frontEnd = CannonUtils.addPositions(rearEnd, [-2, 0]);
         if (CannonUtils.isPositionValid(frontEnd) && this.cannonExists(rearEnd, frontEnd)) {
-            cannons.push(new CannonPiece(rearEnd, frontEnd));
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
         }
 
         // check bottom right
         frontEnd = CannonUtils.addPositions(rearEnd, [2, 2]);
         if (CannonUtils.isPositionValid(frontEnd) && this.cannonExists(rearEnd, frontEnd)) {
-            cannons.push(new CannonPiece(rearEnd, frontEnd));
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
         }
 
         // check bottom left
         frontEnd = CannonUtils.addPositions(rearEnd, [2, -2]);
         if (CannonUtils.isPositionValid(frontEnd) && this.cannonExists(rearEnd, frontEnd)) {
-            cannons.push(new CannonPiece(rearEnd, frontEnd));
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
         }
 
         // check top right
         frontEnd = CannonUtils.addPositions(rearEnd, [-2, 2]);
         if (CannonUtils.isPositionValid(frontEnd) && this.cannonExists(rearEnd, frontEnd)) {
-            cannons.push(new CannonPiece(rearEnd, frontEnd));
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
         }
 
         // check top left
         frontEnd = CannonUtils.addPositions(rearEnd, [-2, -2]);
         if (CannonUtils.isPositionValid(frontEnd) && this.cannonExists(rearEnd, frontEnd)) {
-            cannons.push(new CannonPiece(rearEnd, frontEnd));
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
         }
         
         return cannons;
     }
 
-    getMoveTargets(cannons, selectedPosition) {
-        let isBlackCannon = (this.getPiece(selectedPosition) === 'B');
+    getCannonsWithMiddlePosition(position) {
+        const cannons = [];
+        const piece = this.getPiece(position);
 
+        // check horizontal
+        let frontEnd = CannonUtils.addPositions(position, [0, 1]);
+        let rearEnd = CannonUtils.addPositions(position, [0, -1]);
+        if (CannonUtils.isPositionValid(frontEnd) && CannonUtils.isPositionValid(rearEnd)
+            && this.cannonExists(rearEnd, frontEnd)) {
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
+        }
+
+        // check vertical
+        frontEnd = CannonUtils.addPositions(position, [-1, 0]);
+        rearEnd = CannonUtils.addPositions(position, [1, 0]);
+        if (CannonUtils.isPositionValid(frontEnd) && CannonUtils.isPositionValid(rearEnd)
+            && this.cannonExists(rearEnd, frontEnd)) {
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
+        }
+
+        // check positive diagonal
+        frontEnd = CannonUtils.addPositions(position, [-1, 1]);
+        rearEnd = CannonUtils.addPositions(position, [1, -1]);
+        if (CannonUtils.isPositionValid(frontEnd) && CannonUtils.isPositionValid(rearEnd)
+            && this.cannonExists(rearEnd, frontEnd)) {
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
+        }
+
+        // check negative digonal
+        frontEnd = CannonUtils.addPositions(position, [1, 1]);
+        rearEnd = CannonUtils.addPositions(position, [-1, -1]);
+        if (CannonUtils.isPositionValid(frontEnd) && CannonUtils.isPositionValid(rearEnd)
+            && this.cannonExists(rearEnd, frontEnd)) {
+            cannons.push(new CannonPiece(rearEnd, frontEnd, piece));
+        }
+        
+        return cannons;
+    }
+
+    getCannonMoveTargets(cannons) {
         let moveTargets = [];
         for (let cannon of cannons) {
-            let possibleMoveTargets = cannon.getMoveTargets();
-            for (let moveTarget of possibleMoveTargets) {
-                if (isBlackCannon && this.getPiece(moveTarget) !== 'B') {
-                    moveTargets.push(moveTarget);
-                } else if (!isBlackCannon && this.getPiece(moveTarget) !== 'W') {
-                    moveTargets.push(moveTarget);
-                }
-            }
+            moveTargets = moveTargets.concat(cannon.getMoveTargets(this));
         }
         return moveTargets;
     }
 
-    getBombTargets(cannons, selectedPosition) {
-        let isBlackCannon = (this.getPiece(selectedPosition) === 'B');
-
+    getBombTargets(cannons) {
         let bombTargets = [];
         for (let cannon of cannons) {
-            let possibleBombTargets = cannon.getBombTargets();
-            for (let bombTarget of possibleBombTargets) {
-                if (isBlackCannon && this.getPiece(bombTarget) !== 'B') {
-                    bombTargets.push(bombTarget);
-                } else if (!isBlackCannon && this.getPiece(bombTarget) !== 'W') {
-                    bombTargets.push(bombTarget);
-                }
-            }
+            bombTargets = bombTargets.concat(cannon.getBombTargets(this));
         }
         return bombTargets;
     }
+
+    getSoldierMoveTargets(position) {
+
+    }
     
+    getStateAfterMove(selectedPosition, targetPosition) {
+        const piece = this.getPiece(selectedPosition);
+        this.updatePiece(selectedPosition, 'E');
+        this.updatePiece(targetPosition, piece);
+        return this.state;
+    }
+
+    getStateAfterBomb(targetPosition) {
+        this.updatePiece(targetPosition, 'E');
+        return this.state;
+    }
 }
 
 export default Game;

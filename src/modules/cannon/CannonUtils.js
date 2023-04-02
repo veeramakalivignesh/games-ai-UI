@@ -56,21 +56,25 @@ class CannonUtils {
     static convertMoveStringToDict(move) {
         const moveDict = {
             type: move[6],
-            selectedPosition: [parseInt(move[2]),parent(move[4])]
-        }
+            selectedPosition: [parseInt(move[2]), parseInt(move[4])],
+            targetPosition: [parseInt(move[8]), parseInt(move[10])]
+        };
+        return moveDict;
     }
 
     static getGuideStateAfterSelection(gameState, selectedPosition) {
         const game = new Game(gameState);
-        const cannons = game.getCannons(selectedPosition);
-
-        if (cannons.length === 0) {
-            return this.getInitialGuideState();
+        const piece = game.getPiece(selectedPosition);
+        if(piece  !== 'B' && piece !== 'W') {
+            return this.getInitialGameState();
         }
 
-        let moveTargets = game.getMoveTargets(cannons, selectedPosition);
+        const rearCannons = game.getCannonsWithRearPosition(selectedPosition);
+        let moveTargets = game.getCannonMoveTargets(rearCannons);
+        let bombTargets = game.getBombTargets(rearCannons);
 
-        let bombTargets = game.getBombTargets(cannons, selectedPosition);
+        const middleCannons = game.getCannonsWithMiddlePosition(selectedPosition);
+        bombTargets = bombTargets.concat(game.getBombTargets(middleCannons));
 
         const guideState = this.getInitialGuideState();
         for (let position of moveTargets) {
@@ -83,9 +87,15 @@ class CannonUtils {
         return guideState;
     }
 
-    // static getGameStateAfterMove(gameState, move) {
-    //     move
-    // }
+    static getGameStateAfterMove(gameState, moveDict) {
+        const game = new Game(gameState);
+
+        if (moveDict.type === 'M') {
+            return game.getStateAfterMove(moveDict.selectedPosition, moveDict.targetPosition);
+        } else {
+            return game.getStateAfterBomb(moveDict.targetPosition);
+        }
+    }
 }
 
 export default CannonUtils;

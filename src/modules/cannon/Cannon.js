@@ -27,7 +27,7 @@ function Soldier({ isBlack, hasGuide, isDarkGuide, selected }) {
   );
 }
 
-function Square({ position, squareGameState, squareGuideState, isSoldierSelected, fun }) {
+function Square({ position, squareGameState, squareGuideState, isSoldierSelected, selectSquare, executeMove }) {
 
   let dark = (position[0] + position[1]) % 2 === 1;
   let hasSoldier = squareGameState !== 'E';
@@ -36,7 +36,12 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
   let isDarkGuide = squareGuideState === 'D';
 
   function handleClick() {
-    fun(position);
+    if (hasGuide) {
+      const moveType = isDarkGuide ? 'M' : 'B';
+      executeMove(moveType, position);
+    } else {
+      selectSquare(position);
+    }
   }
 
   return (
@@ -66,11 +71,21 @@ export default function Board() {
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
 
-  const select = (position) => {
+  const selectSquare = (position) => {
     setSelectedPosition(position);
     setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
   };
 
+  const executeMove = (moveType, targetPosition) => {
+    const moveDict = {
+      type: moveType,
+      selectedPosition: selectedPosition,
+      targetPosition: targetPosition
+    };
+    setGameState(CannonUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict));
+    setGuideState(CannonUtils.getInitialGuideState())
+  }
+  
   const rows = []
   for (let i = 0; i < CannonUtils.NUM_ROWS; i++) {
     const squares = []
@@ -85,7 +100,8 @@ export default function Board() {
           squareGameState={gameState[i][j]}
           squareGuideState={guideState[i][j]}
           isSoldierSelected={isSoldierSelected}
-          fun={select}
+          selectSquare={selectSquare}
+          executeMove={executeMove}
         />
       );
     }
