@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import "./Cannon.css"
-import CanononUtils from "./cannon-utils"
+import "./Cannon.css";
+import CannonUtils from "./CannonUtils";
+var _ = require('lodash');
 
 function Guide({ isDark }) {
   return (
@@ -61,21 +62,19 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
 }
 
 export default function Board() {
-  const [gameState, setGameState] = useState(CanononUtils.INITIAL_GAME_STATE);
-  const [guideState, setGuideState] = useState(CanononUtils.INITIAL_GUIDE_STATE);
+  const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
+  const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
 
   const select = (position) => {
     setSelectedPosition(position);
-    let newGuideState = guideState;
-    newGuideState[4][4] = 'R';
-    setGuideState(newGuideState);
+    setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
   };
 
   const rows = []
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < CannonUtils.NUM_ROWS; i++) {
     const squares = []
-    for (let j = 0; j < 8; j++) {
+    for (let j = 0; j < CannonUtils.NUM_COLUMNS; j++) {
       let isSoldierSelected = false;
       if (selectedPosition) {
         isSoldierSelected = selectedPosition[0] === i && selectedPosition[1] === j;
