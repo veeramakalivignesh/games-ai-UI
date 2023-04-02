@@ -90,6 +90,7 @@ export default function Board() {
     };
     setGameState(CannonUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict));
     setGuideState(CannonUtils.getInitialGuideState())
+    setSelectedPosition(null);
   }
   
   const rows = []
