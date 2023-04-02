@@ -15,6 +15,25 @@ class Game {
         this.state[position[0]][position[1]] = piece;
     }
 
+    isEmpty(postion) {
+        return this.getPiece(postion) === 'E';
+    }
+
+    isBlackPiece(position) {
+        return this.getPiece(position) === 'B';
+    }
+
+    isWhitePiece(position) {
+        return this.getPiece(position) === 'W';
+    }
+
+    areOpponents(position0, position1) {
+        return (
+            (this.isBlackPiece(position0) && this.isWhitePiece(position1)) ||
+            (this.isWhitePiece(position0) && this.isBlackPiece(position1))
+        );
+    }
+
     cannonExists(rearEnd, frontEnd) {
         const rearPiece = this.getPiece(rearEnd);
         const frontPiece = this.getPiece(frontEnd);
@@ -138,7 +157,46 @@ class Game {
     }
 
     getSoldierMoveTargets(position) {
+        const piece = this.getPiece(position);
+        if (piece !== 'B' && piece !== 'W') {
+            return [];
+        }
 
+        const moveTargets = [];
+        const forwardOffset = this.isBlackPiece(position) ? -1 : 1;
+
+        // move 1 step forward
+        let moveTarget = CannonUtils.addPositions(position, [forwardOffset, 0])
+        if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
+            this.areOpponents(position, moveTarget))) {
+            moveTargets.push(moveTarget);
+        }
+
+        // move 1 step along diagonals
+        moveTarget = CannonUtils.addPositions(position, [forwardOffset, 1])
+        if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
+            this.areOpponents(position, moveTarget))) {
+            moveTargets.push(moveTarget);
+        }
+
+        moveTarget = CannonUtils.addPositions(position, [forwardOffset, -1])
+        if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
+            this.areOpponents(position, moveTarget))) {
+            moveTargets.push(moveTarget);
+        }
+
+        // capture 1 step horizontally 
+        moveTarget = CannonUtils.addPositions(position, [0, 1])
+        if (CannonUtils.isPositionValid(moveTarget) && this.areOpponents(position, moveTarget)) {
+            moveTargets.push(moveTarget);
+        }
+
+        moveTarget = CannonUtils.addPositions(position, [0, -1])
+        if (CannonUtils.isPositionValid(moveTarget) && this.areOpponents(position, moveTarget)) {
+            moveTargets.push(moveTarget);
+        }
+
+        return moveTargets;
     }
     
     getStateAfterMove(selectedPosition, targetPosition) {

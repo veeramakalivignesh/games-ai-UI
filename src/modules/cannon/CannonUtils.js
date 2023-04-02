@@ -8,12 +8,12 @@ class CannonUtils {
 
     static INITIAL_GAME_STATE = [
         ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
-        ['E', 'W', 'E', 'W', 'E', 'W', 'W', 'W'],
+        ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
         ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
         ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
         ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
         ['B', 'E', 'B', 'E', 'B', 'E', 'B', 'E'],
-        ['B', 'B', 'B', 'B', 'B', 'E', 'B', 'E'],
+        ['B', 'E', 'B', 'E', 'B', 'E', 'B', 'E'],
         ['B', 'E', 'B', 'E', 'B', 'E', 'B', 'E']
     ];
 
@@ -66,15 +66,19 @@ class CannonUtils {
         const game = new Game(gameState);
         const piece = game.getPiece(selectedPosition);
         if(piece  !== 'B' && piece !== 'W') {
-            return this.getInitialGameState();
+            return this.getInitialGuideState();
         }
 
+        // cannon moves
         const rearCannons = game.getCannonsWithRearPosition(selectedPosition);
         let moveTargets = game.getCannonMoveTargets(rearCannons);
         let bombTargets = game.getBombTargets(rearCannons);
 
         const middleCannons = game.getCannonsWithMiddlePosition(selectedPosition);
         bombTargets = bombTargets.concat(game.getBombTargets(middleCannons));
+
+        // soldier moves
+        moveTargets = moveTargets.concat(game.getSoldierMoveTargets(selectedPosition));
 
         const guideState = this.getInitialGuideState();
         for (let position of moveTargets) {
@@ -83,7 +87,7 @@ class CannonUtils {
         for (let position of bombTargets) {
             guideState[position[0]][position[1]] = 'R';
         }
-
+        
         return guideState;
     }
 

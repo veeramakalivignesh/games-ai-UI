@@ -8,6 +8,14 @@ class CannonPiece {
         this.color = color;
     }
 
+    isTargetOpponent(game, position) {
+        if(this.color === 'B') {
+            return game.isWhitePiece(position);
+        } else {
+            return game.isBlackPiece(position);
+        }
+    }
+
     getMoveTargets(game) {
         const moveTargets = [];
 
@@ -15,7 +23,7 @@ class CannonPiece {
         let offset = CannonUtils.multiplyPositionWithScalar(0.5,
             CannonUtils.substractPositions(this.frontEnd, this.rearEnd));
         let moveTarget = CannonUtils.addPositions(this.frontEnd, offset)
-        if (CannonUtils.isPositionValid(moveTarget) && game.getPiece(moveTarget) === 'E') {
+        if (CannonUtils.isPositionValid(moveTarget) && game.isEmpty(moveTarget)) {
             moveTargets.push(moveTarget);
         }
 
@@ -27,20 +35,21 @@ class CannonPiece {
             CannonUtils.substractPositions(this.frontEnd, this.rearEnd));
         let immediateFront = CannonUtils.addPositions(this.frontEnd, offset);
         const isFrontBlocked = (CannonUtils.isPositionValid(immediateFront) &&
-            game.getPiece(immediateFront) !== 'E');
+            !game.isEmpty(immediateFront));
 
         offset = CannonUtils.multiplyPositionWithScalar(0.5,
             CannonUtils.substractPositions(this.rearEnd, this.frontEnd));
         let immediateBack = CannonUtils.addPositions(this.rearEnd, offset);
         const isBackBlocked = (CannonUtils.isPositionValid(immediateBack) &&
-            game.getPiece(immediateBack) !== 'E');
+            !game.isEmpty(immediateBack));
 
         const bombTargets = [];
         if (!isFrontBlocked) {
             // shoot 2 steps front
             offset = CannonUtils.substractPositions(this.frontEnd, this.rearEnd);
             let bombTarget = CannonUtils.addPositions(this.frontEnd, offset)
-            if (CannonUtils.isPositionValid(bombTarget) && game.getPiece(bombTarget) !== this.color) {
+            if (CannonUtils.isPositionValid(bombTarget) && (this.isTargetOpponent(game, bombTarget) ||
+                game.isEmpty(bombTarget))) {
                 bombTargets.push(bombTarget);
             }
 
@@ -48,7 +57,8 @@ class CannonPiece {
             offset = CannonUtils.multiplyPositionWithScalar(1.5,
                 CannonUtils.substractPositions(this.frontEnd, this.rearEnd));
             bombTarget = CannonUtils.addPositions(this.frontEnd, offset)
-            if (CannonUtils.isPositionValid(bombTarget) && game.getPiece(bombTarget) !== this.color) {
+            if (CannonUtils.isPositionValid(bombTarget) && (this.isTargetOpponent(game, bombTarget) ||
+                game.isEmpty(bombTarget))) {
                 bombTargets.push(bombTarget);
             }
         }
@@ -56,7 +66,8 @@ class CannonPiece {
             // shoot 2 steps back
             offset = CannonUtils.substractPositions(this.rearEnd, this.frontEnd);
             let bombTarget = CannonUtils.addPositions(this.rearEnd, offset)
-            if (CannonUtils.isPositionValid(bombTarget) && game.getPiece(bombTarget) !== this.color) {
+            if (CannonUtils.isPositionValid(bombTarget) && (this.isTargetOpponent(game, bombTarget) ||
+                game.isEmpty(bombTarget))) {
                 bombTargets.push(bombTarget);
             }
 
@@ -64,7 +75,8 @@ class CannonPiece {
             offset = CannonUtils.multiplyPositionWithScalar(1.5,
                 CannonUtils.substractPositions(this.rearEnd, this.frontEnd));
             bombTarget = CannonUtils.addPositions(this.rearEnd, offset)
-            if (CannonUtils.isPositionValid(bombTarget) && game.getPiece(bombTarget) !== this.color) {
+            if (CannonUtils.isPositionValid(bombTarget) && (this.isTargetOpponent(game, bombTarget) ||
+                game.isEmpty(bombTarget))) {
                 bombTargets.push(bombTarget);
             }
         }
