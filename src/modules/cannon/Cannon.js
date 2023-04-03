@@ -78,13 +78,13 @@ export default function Board() {
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [isBlackTurn, setBlackTurn] = useState(true);
 
-  const isCurrentPlayer = (position) => {
+  const isPieceCurrentPlayer = (position) => {
     return (isBlackTurn !== null) && ((isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
       (!isBlackTurn && gameState[position[0]][position[1]] === 'W'));
   }
 
   const selectSquare = (position) => {
-    if (isCurrentPlayer(position)) {
+    if (isPieceCurrentPlayer(position)) {
       setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
       setSelectedPosition(position);
     } else {
@@ -104,15 +104,18 @@ export default function Board() {
     setGuideState(CannonUtils.getInitialGuideState());
     setSelectedPosition(null);
 
-    const gameCondition = CannonUtils.gameCondition(newGameState);
+    const gameCondition = CannonUtils.gameCondition(newGameState, !isBlackTurn);
     if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
       setBlackTurn(!isBlackTurn);
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS){
+    } else if (gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS) {
       setBlackTurn(null);
       alert("!! GAME OVER --> BLACK WINS !!");
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS){
+    } else if (gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS) {
       setBlackTurn(null);
       alert("!! GAME OVER --> WHITE WINS !!");
+    } else if (gameCondition === CannonUtils.GAME_CONDITION.STALEMATE) {
+      setBlackTurn(null);
+      alert("!! GAME OVER --> STALEMATE !!");
     }
   }
   

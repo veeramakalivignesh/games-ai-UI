@@ -108,10 +108,9 @@ class CannonUtils {
         }
     }
 
-    static gameCondition(gameState) {
+    static gameCondition(gameState, isBlackTurn) {
         let numBlackTownhalls = 0;
         let numWhiteTownhalls = 0;
-
         for (let row of gameState) {
             for (let square of row) {
                 if (square === 'Tb') {
@@ -122,7 +121,6 @@ class CannonUtils {
                 }
             }
         }
-
         if (numBlackTownhalls <= 2) {
             return this.GAME_CONDITION.WHITE_WINS;
         }
@@ -130,7 +128,19 @@ class CannonUtils {
             return this.GAME_CONDITION.BLACK_WINS;
         }
 
-        return this.GAME_CONDITION.ON;
+        let soldier = isBlackTurn ? 'B' : 'W';
+        for (let i = 0; i < this.NUM_ROWS; i++) {
+            for (let j = 0; j < this.NUM_COLUMNS; j++) {
+                if (gameState[i][j] === soldier) {
+                    let newGuideState = this.getGuideStateAfterSelection(gameState, [i, j]);
+                    if (JSON.stringify(newGuideState) !== JSON.stringify(this.getInitialGuideState())) {
+                        return this.GAME_CONDITION.ON;
+                    }
+                }
+            }
+        }
+
+        return this.GAME_CONDITION.STALEMATE;
     }
 }
 
