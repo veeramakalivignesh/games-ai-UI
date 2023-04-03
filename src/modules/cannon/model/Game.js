@@ -164,11 +164,15 @@ class Game {
 
         const moveTargets = [];
         const forwardOffset = this.isBlackPiece(position) ? -1 : 1;
+        let isEnemyPieceAdjacent = false;
 
         // move 1 step forward
         let moveTarget = CannonUtils.addPositions(position, [forwardOffset, 0])
         if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
             this.areOpponents(position, moveTarget))) {
+            if (!this.isEmpty(moveTarget)) {
+                isEnemyPieceAdjacent = true;
+            }
             moveTargets.push(moveTarget);
         }
 
@@ -176,24 +180,54 @@ class Game {
         moveTarget = CannonUtils.addPositions(position, [forwardOffset, 1])
         if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
             this.areOpponents(position, moveTarget))) {
+            if (!this.isEmpty(moveTarget)) {
+                isEnemyPieceAdjacent = true;
+            }
             moveTargets.push(moveTarget);
         }
 
         moveTarget = CannonUtils.addPositions(position, [forwardOffset, -1])
         if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
             this.areOpponents(position, moveTarget))) {
+            if (!this.isEmpty(moveTarget)) {
+                isEnemyPieceAdjacent = true;
+            }
             moveTargets.push(moveTarget);
         }
 
         // capture 1 step horizontally 
         moveTarget = CannonUtils.addPositions(position, [0, 1])
         if (CannonUtils.isPositionValid(moveTarget) && this.areOpponents(position, moveTarget)) {
+            isEnemyPieceAdjacent = true;
             moveTargets.push(moveTarget);
         }
 
         moveTarget = CannonUtils.addPositions(position, [0, -1])
         if (CannonUtils.isPositionValid(moveTarget) && this.areOpponents(position, moveTarget)) {
+            isEnemyPieceAdjacent = true;
             moveTargets.push(moveTarget);
+        }
+
+        if (isEnemyPieceAdjacent) {
+            // retreat 2 steps backward
+            moveTarget = CannonUtils.addPositions(position, [-2 * forwardOffset, 0])
+            if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
+                this.areOpponents(position, moveTarget))) {
+                moveTargets.push(moveTarget);
+            }
+
+            // retreat 2 steps along diagonals
+            moveTarget = CannonUtils.addPositions(position, [-2 * forwardOffset, 2])
+            if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
+                this.areOpponents(position, moveTarget))) {
+                moveTargets.push(moveTarget);
+            }
+
+            moveTarget = CannonUtils.addPositions(position, [-2 * forwardOffset, -2])
+            if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
+                this.areOpponents(position, moveTarget))) {
+                moveTargets.push(moveTarget);
+            }
         }
 
         return moveTargets;
