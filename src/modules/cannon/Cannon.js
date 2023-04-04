@@ -146,8 +146,8 @@ export default function Board() {
   }
 
   return (
-    <>
+    <div style={{borderStyle: 'outset', borderWidth: '10px'}}>
       {rows}
-    </>
+    </div>
   );
 }

@@ -6,11 +6,17 @@ body {
   font-family: sans-serif;
   margin: 20px;
   padding: 0;
+  background-image: url('../public/ep0d7H.jpg');
 }
 
 h1 {
-  margin-top: 0;
-  font-size: 22px;
+  font-family: 'Rouge Script', cursive;
+  margin-top: 0 !important;
+  font-size: 50px !important;
+  color: lightgray;
+  font-weight: 500 !important;
+  /* text-shadow: 0 3px gray; */
+  
 }
 
 h2 {
