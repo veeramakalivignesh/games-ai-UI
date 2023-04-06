@@ -1,25 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import "./Cannon.css";
 import CannonUtils from "./CannonUtils";
 var _ = require('lodash');
 
 function Guide({ isDark }) {
   return (
-    <button className={isDark ? 'dot-dark' : 'dot-red'} />
+    <button className={isDark ? 'dot guide-dark' : 'dot guide-red'} />
   );
 }
 
 function Piece({ isSoldier, isBlack, hasGuide, isDarkGuide, selected }) {
-
   let pieceClass = "";
   if (isSoldier) {
     if (isBlack) {
-      pieceClass = selected ? 'black-circle-selected' : 'black-circle';
+      pieceClass = selected ? 'circle black black-selected' : 'circle black hollow';
     } else {
-      pieceClass = selected ? 'white-circle-selected' : 'white-circle';
+      pieceClass = selected ? 'circle white white-selected' : 'circle white hollow';
     }
   } else {
-    pieceClass = isBlack ? 'black-townhall' : 'white-townhall'
+    pieceClass = isBlack ? 'townhall black' : 'townhall white'
   }
 
   return (
@@ -32,7 +31,6 @@ function Piece({ isSoldier, isBlack, hasGuide, isDarkGuide, selected }) {
 }
 
 function Square({ position, squareGameState, squareGuideState, isSoldierSelected, selectSquare, executeMove }) {
-
   let dark = (position[0] + position[1]) % 2 === 1;
   let hasPiece = squareGameState !== 'E';
   let isBlackPiece = (squareGameState === 'B' || squareGameState === 'Tb');
@@ -51,7 +49,7 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
 
   return (
     <button
-      className={dark ? "square-dark" : "square-light"}
+      className={dark ? "square dark" : "square light"}
       onClick={handleClick}
     >
       {
@@ -72,14 +70,23 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
   );
 }
 
-export default function Board({addMoveToLog}) {
+export default function Board({gameCondition, setGameCondition, addMoveLog}) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [isBlackTurn, setBlackTurn] = useState(true);
 
+  useEffect(() => {
+    if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
+      setGameState(CannonUtils.getInitialGameState());
+      setGuideState(CannonUtils.getInitialGuideState());
+      setSelectedPosition(null);
+      setBlackTurn(true);
+    }
+  });
+
   const isPieceCurrentPlayer = (position) => {
-    return (isBlackTurn !== null) && ((isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
+    return (gameCondition === CannonUtils.GAME_CONDITION.ON) && ((isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
       (!isBlackTurn && gameState[position[0]][position[1]] === 'W'));
   }
 
@@ -103,21 +110,9 @@ export default function Board({addMoveToLog}) {
     setGameState(newGameState);
     setGuideState(CannonUtils.getInitialGuideState());
     setSelectedPosition(null);
-    addMoveToLog(CannonUtils.convertMoveDictToString(moveDict));
-
-    const gameCondition = CannonUtils.gameCondition(newGameState, !isBlackTurn);
-    if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
-      setBlackTurn(!isBlackTurn);
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS) {
-      setBlackTurn(null);
-      alert("!! GAME OVER --> BLACK WINS !!");
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS) {
-      setBlackTurn(null);
-      alert("!! GAME OVER --> WHITE WINS !!");
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.STALEMATE) {
-      setBlackTurn(null);
-      alert("!! GAME OVER --> STALEMATE !!");
-    }
+    setGameCondition(CannonUtils.gameCondition(newGameState, !isBlackTurn));
+    setBlackTurn(!isBlackTurn);
+    addMoveLog(CannonUtils.convertMoveDictToString(moveDict));
   }
   
   const rows = []

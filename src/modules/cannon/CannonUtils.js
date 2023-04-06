@@ -10,7 +10,8 @@ class CannonUtils {
         BLACK_WINS: "BLACK_WINS",
         WHITE_WINS: "WHITE_WINS",
         STALEMATE: "STALEMATE",
-        ON: "ON"
+        ON: "ON",
+        OFF: "OFF"
     };
 
     static INITIAL_GAME_STATE = [

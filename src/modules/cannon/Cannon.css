@@ -1,7 +1,5 @@
-.square-light {
-    background: #fff;
-    border: 1px solid #B0B0B0;
-    background-color: #B0B0B0;
+.square {
+    border: 1px solid;
     float: left;
     height: 75px;
     margin-right: -1px;
@@ -9,85 +7,69 @@
     width: 75px;
 }
 
-.square-dark {
-    background: #fff;
-    border: 1px solid #505050;
-    background-color: #505050;
-    float: left;
-    height: 75px;
-    margin-right: -1px;
-    margin-top: -1px;
-    width: 75px;
-}
-
-.black-circle {
+.circle {
     width: 50px;
     height: 50px;
     background-color: transparent;
-    border: 5px solid black;
+    border: 5px solid;
     border-radius: 50%;
     align-items: center;
 }
 
-.black-circle-selected {
+.townhall {
     width: 50px;
     height: 50px;
-    background-color: transparent;
-    background: radial-gradient(black, transparent);
-    border: 5px solid black;
-    border-radius: 50%;
+    border: 5px solid;
     align-items: center;
 }
 
-.white-circle {
-    width: 50px;
-    height: 50px;
-    background-color: transparent;
-    border: 5px solid white;
-    border-radius: 50%;
-    align-items: center;
-}
-
-.white-circle-selected {
-    width: 50px;
-    height: 50px;
-    background-color: transparent;
-    background: radial-gradient(white, transparent);
-    border: 5px solid white;
-    border-radius: 50%;
-    align-items: center;
-}
-
-.black-townhall {
-    width: 50px;
-    height: 50px;
-    background-color: black;
-    border: 5px solid black;
-    align-items: center;
-}
-
-.white-townhall {
-    width: 50px;
-    height: 50px;
-    background-color: white;
-    border: 5px solid white;
-    align-items: center;
-}
-
-.dot-dark {
+.dot {
     width: 20px;
     height: 20px;
+    border-radius: 50%;
+    align-items: center;
+}
+
+.dark {
+    background-color: #505050;
+    border-color: #505050;
+}
+
+.light {
+    background-color: #B0B0B0;
+    border-color: #B0B0B0;
+}
+
+.black {
+    background-color: black;
+    border-color: black;
+}
+
+.white {
+    background-color: white;
+    border-color: white;
+}
+
+.guide-dark {
     background-color: #35230a;
     border: 1px solid #35230a;
-    border-radius: 50%;
-    align-items: center;
 }
 
-.dot-red {
-    width: 20px;
-    height: 20px;
+.guide-red {
     background-color: #8b0000;
     border: 1px solid #8b0000;
-    border-radius: 50%;
-    align-items: center;
+}
+
+.hollow {
+    background-color: transparent;
+}
+
+.black-selected {
+    background-color: transparent;
+    background: radial-gradient(black, transparent);
+}
+
+.white-selected {
+    background-color: transparent;
+    background: radial-gradient(white, transparent);
 }
