@@ -69,6 +69,11 @@ class CannonUtils {
         return moveDict;
     }
 
+    static convertMoveDictToString(moveDict) {
+        return "S " + moveDict.selectedPosition[0] + " " + moveDict.selectedPosition[1] + " " +
+            moveDict.type + " " + moveDict.targetPosition[0] + " " + moveDict.targetPosition[1];
+    }
+
     static getGuideStateAfterSelection(gameState, selectedPosition) {
         const game = new Game(gameState);
         const piece = game.getPiece(selectedPosition);

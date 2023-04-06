@@ -72,7 +72,7 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
   );
 }
 
-export default function Board() {
+export default function Board({addMoveToLog}) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
@@ -103,6 +103,7 @@ export default function Board() {
     setGameState(newGameState);
     setGuideState(CannonUtils.getInitialGuideState());
     setSelectedPosition(null);
+    addMoveToLog(CannonUtils.convertMoveDictToString(moveDict));
 
     const gameCondition = CannonUtils.gameCondition(newGameState, !isBlackTurn);
     if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
@@ -146,7 +147,7 @@ export default function Board() {
   }
 
   return (
-    <div style={{borderStyle: 'outset', borderWidth: '10px'}}>
+    <div style={{ borderStyle: 'outset', borderWidth: '10px' }}>
       {rows}
     </div>
   );
