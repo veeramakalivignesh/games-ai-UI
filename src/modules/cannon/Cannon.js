@@ -40,8 +40,12 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
 
   function handleClick() {
     if (hasGuide) {
-      const moveType = isDarkGuide ? 'M' : 'B';
-      executeMove(moveType, position);
+      const moveDict = {
+        type: isDarkGuide ? 'M' : 'B',
+        selectedPosition: null,
+        targetPosition: position
+      };
+      executeMove(moveDict);
     } else {
       selectSquare(position);
     }
@@ -70,20 +74,19 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
   );
 }
 
-export default function Board({gameCondition, setGameCondition, addMoveLog}) {
+export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog}) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [isBlackTurn, setBlackTurn] = useState(true);
+  const [counter, setCounter] = useState(-1);
 
-  useEffect(() => {
-    if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
-      setGameState(CannonUtils.getInitialGameState());
-      setGuideState(CannonUtils.getInitialGuideState());
-      setSelectedPosition(null);
-      setBlackTurn(true);
-    }
-  });
+  const reset = () => {
+    setGameState(CannonUtils.getInitialGameState());
+    setGuideState(CannonUtils.getInitialGuideState());
+    setSelectedPosition(null);
+    setBlackTurn(true);
+  };
 
   const isPieceCurrentPlayer = (position) => {
     return (gameCondition === CannonUtils.GAME_CONDITION.ON) && ((isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
@@ -100,20 +103,55 @@ export default function Board({gameCondition, setGameCondition, addMoveLog}) {
     }
   };
 
-  const executeMove = (moveType, targetPosition) => {
-    const moveDict = {
-      type: moveType,
-      selectedPosition: selectedPosition,
-      targetPosition: targetPosition
-    };
-    let newGameState = CannonUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict);
+  const executeMove = (moveDict) => {
+    if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
+      moveDict.selectedPosition = selectedPosition;
+    }
+    const newGameState = CannonUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict);
     setGameState(newGameState);
     setGuideState(CannonUtils.getInitialGuideState());
     setSelectedPosition(null);
-    setGameCondition(CannonUtils.gameCondition(newGameState, !isBlackTurn));
     setBlackTurn(!isBlackTurn);
     addMoveLog(CannonUtils.convertMoveDictToString(moveDict));
+
+    const newGameCondition = CannonUtils.getGameCondition(newGameState, !isBlackTurn);
+    if(newGameCondition !== CannonUtils.GAME_CONDITION.ON) {
+      setGameCondition(newGameCondition);
+    }
   }
+
+  const animateMove = (moveDict) => {
+    const delay = 500;
+    setTimeout(() => {
+      setGuideState(CannonUtils.getGuideStateForMoveAnimation(moveDict));
+      setSelectedPosition(moveDict.selectedPosition);
+    }, delay);
+
+    setTimeout(() => {
+      executeMove(moveDict);
+      setCounter(counter + 1);
+    }, 2 * delay);
+  };
+
+  useEffect(() => {
+    if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
+      reset();
+    } else if (gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
+      if (counter < 0 || counter >= savedGameLog.length) {
+        reset();
+        setCounter(0);
+      }
+    }
+  }, [gameCondition]);
+
+  useEffect(() => {
+    if (gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
+      if (counter >= 0 && counter < savedGameLog.length) {
+        const moveDict = CannonUtils.convertMoveStringToDict(savedGameLog[counter]);
+        animateMove(moveDict);
+      }
+    }
+  }, [counter]);
   
   const rows = []
   for (let i = 0; i < CannonUtils.NUM_ROWS; i++) {

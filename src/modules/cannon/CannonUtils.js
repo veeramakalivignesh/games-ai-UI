@@ -11,7 +11,8 @@ class CannonUtils {
         WHITE_WINS: "WHITE_WINS",
         STALEMATE: "STALEMATE",
         ON: "ON",
-        OFF: "OFF"
+        OFF: "OFF",
+        REPLAY: "REPLAY"
     };
 
     static INITIAL_GAME_STATE = [
@@ -114,7 +115,7 @@ class CannonUtils {
         }
     }
 
-    static gameCondition(gameState, isBlackTurn) {
+    static getGameCondition(gameState, isBlackTurn) {
         let numBlackTownhalls = 0;
         let numWhiteTownhalls = 0;
         for (let row of gameState) {
@@ -147,6 +148,16 @@ class CannonUtils {
         }
 
         return this.GAME_CONDITION.STALEMATE;
+    }
+
+    static getGuideStateForMoveAnimation(moveDict) {
+        const guideState = this.getInitialGuideState();
+        if(moveDict.type==='M') {
+            guideState[moveDict.targetPosition[0]][moveDict.targetPosition[1]] = 'D';
+        } else {
+            guideState[moveDict.targetPosition[0]][moveDict.targetPosition[1]] = 'R';
+        }
+        return guideState;
     }
 }
 

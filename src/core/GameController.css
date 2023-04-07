@@ -64,6 +64,11 @@
     border-width: 0px;
 }
 
+.button:disabled {
+    color: #00000079;
+    border-color: #00000079;;
+}
+
 .black {
     color: black;
 }

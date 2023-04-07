@@ -6,13 +6,16 @@ import CannonUtils from './modules/cannon/CannonUtils';
 
 export default function App() {
   const [gameLog, setGameLog] = useState([]);
+  const [savedGameLog, setSavedGameLog] = useState([]);
   const [gameCondition, setGameCondition] = useState(CannonUtils.GAME_CONDITION.OFF);
 
   useEffect(() => {
     if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
       return;
-    }
-    if(gameCondition === CannonUtils.GAME_CONDITION.OFF) {
+    } else if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
+      setGameLog([]);
+      return;
+    } else if (gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
       setGameLog([]);
       return;
     }
@@ -30,7 +33,7 @@ export default function App() {
       newGameLog.push("Stalemate!");
       alertMessage = "!! GAME OVER --> STALEMATE !!";
     }
-
+    setSavedGameLog(gameLog);
     setGameLog(newGameLog);
     setTimeout(() => {
       alert(alertMessage);
@@ -53,6 +56,7 @@ export default function App() {
       }}>
         <Cannon
           gameCondition={gameCondition}
+          savedGameLog={savedGameLog}
           setGameCondition={setGameCondition}
           addMoveLog={addMoveLog}
         />

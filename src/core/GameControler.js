@@ -17,7 +17,18 @@ export default function GameController({ gameLog, gameCondition, setGameConditio
                 setGameCondition(CannonUtils.GAME_CONDITION.OFF);
             }
         }
-    }
+    };
+
+    const replayButtonClick = () => {
+        setGameCondition(CannonUtils.GAME_CONDITION.REPLAY);
+    };
+
+    const isReplayEnabled = () => {
+        return (
+            gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS ||
+            gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS ||
+            gameCondition === CannonUtils.GAME_CONDITION.STALEMATE);
+    };
 
     let i = 0;
     const gameLogComponent = [];
@@ -47,7 +58,9 @@ export default function GameController({ gameLog, gameCondition, setGameConditio
                 </button>
             </div>
             <div>
-                <button className='button'> Replay </button>
+                <button className='button' onClick={replayButtonClick} disabled={!isReplayEnabled()}>
+                    Replay
+                </button>
             </div>
         </div>
     );
