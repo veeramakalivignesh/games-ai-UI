@@ -74,7 +74,7 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
   );
 }
 
-export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog}) {
+export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog, setGameLog}) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
@@ -129,18 +129,21 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
 
     setTimeout(() => {
       executeMove(moveDict);
-      setCounter(counter + 1);
+      if(gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
+        setCounter(counter + 1);
+      }
     }, 2 * delay);
   };
 
   useEffect(() => {
     if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
       reset();
+      setCounter(-1);
     } else if (gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
-      if (counter < 0 || counter >= savedGameLog.length) {
-        reset();
-        setCounter(0);
-      }
+      reset();
+      setCounter(0);
+    } else if (CannonUtils.isGameOverCondition(gameCondition)) {
+      setCounter(-1);
     }
   }, [gameCondition]);
 
@@ -150,6 +153,10 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
         const moveDict = CannonUtils.convertMoveStringToDict(savedGameLog[counter]);
         animateMove(moveDict);
       }
+    } else if(gameCondition === CannonUtils.GAME_CONDITION.OFF) {
+      reset();
+      setCounter(-1);
+      setGameLog([]);
     }
   }, [counter]);
   
@@ -163,6 +170,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
       }
       squares.push(
         <Square
+          key={j}
           position={[i, j]}
           squareGameState={gameState[i][j]}
           squareGuideState={guideState[i][j]}
@@ -173,7 +181,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
       );
     }
     rows.push(
-      <div className="board-row">
+      <div className="board-row" key={i}>
         {squares}
       </div>
     );

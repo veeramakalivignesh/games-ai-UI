@@ -59,6 +59,7 @@ export default function App() {
           savedGameLog={savedGameLog}
           setGameCondition={setGameCondition}
           addMoveLog={addMoveLog}
+          setGameLog={setGameLog}
         />
         <GameController
           gameLog={gameLog}

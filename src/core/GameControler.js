@@ -24,10 +24,7 @@ export default function GameController({ gameLog, gameCondition, setGameConditio
     };
 
     const isReplayEnabled = () => {
-        return (
-            gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS ||
-            gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS ||
-            gameCondition === CannonUtils.GAME_CONDITION.STALEMATE);
+        return CannonUtils.isGameOverCondition(gameCondition);
     };
 
     let i = 0;
@@ -36,9 +33,11 @@ export default function GameController({ gameLog, gameCondition, setGameConditio
         const textClassName = i % 2 ? 'game-log-text white' : 'game-log-text black';
         gameLogComponent.push(
             <input
+                key={i}
                 className={textClassName}
                 type={"text"}
                 value={log}
+                disabled={true}
             />
         );
         i++;

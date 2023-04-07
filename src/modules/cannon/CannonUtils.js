@@ -45,6 +45,13 @@ class CannonUtils {
         return  _.cloneDeep(this.INITIAL_GUIDE_STATE);
     }
 
+    static isGameOverCondition(gameCondition) {
+        return (
+            gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS ||
+            gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS ||
+            gameCondition === CannonUtils.GAME_CONDITION.STALEMATE);
+    }
+
     static isPositionValid(position) {
         return (position[0] >= 0 && position[0] < this.NUM_ROWS &&
             position[1] >= 0 && position[1] < this.NUM_COLUMNS);
