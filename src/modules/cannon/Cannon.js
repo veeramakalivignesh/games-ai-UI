@@ -1,80 +1,10 @@
 import { useEffect, useState } from 'react';
 import "./Cannon.css";
 import CannonUtils from "./CannonUtils";
+import Square from './CannonComponents';
 var _ = require('lodash');
 
-function Guide({ isDark }) {
-  return (
-    <button className={isDark ? 'dot guide-dark' : 'dot guide-red'} />
-  );
-}
-
-function Piece({ isSoldier, isBlack, hasGuide, isDarkGuide, selected }) {
-  let pieceClass = "";
-  if (isSoldier) {
-    if (isBlack) {
-      pieceClass = selected ? 'circle black black-selected' : 'circle black hollow';
-    } else {
-      pieceClass = selected ? 'circle white white-selected' : 'circle white hollow';
-    }
-  } else {
-    pieceClass = isBlack ? 'townhall black' : 'townhall white'
-  }
-
-  return (
-    <button
-      className={pieceClass}
-    >
-      {hasGuide ? <Guide isDark={isDarkGuide} /> : null}
-    </button>
-  );
-}
-
-function Square({ position, squareGameState, squareGuideState, isSoldierSelected, selectSquare, executeMove }) {
-  let dark = (position[0] + position[1]) % 2 === 1;
-  let hasPiece = squareGameState !== 'E';
-  let isBlackPiece = (squareGameState === 'B' || squareGameState === 'Tb');
-  let isSoldier = (squareGameState === 'B' || squareGameState === 'W')
-  let hasGuide = squareGuideState !== 'N';
-  let isDarkGuide = squareGuideState === 'D';
-
-  function handleClick() {
-    if (hasGuide) {
-      const moveDict = {
-        type: isDarkGuide ? 'M' : 'B',
-        selectedPosition: null,
-        targetPosition: position
-      };
-      executeMove(moveDict);
-    } else {
-      selectSquare(position);
-    }
-  }
-
-  return (
-    <button
-      className={dark ? "square dark" : "square light"}
-      onClick={handleClick}
-    >
-      {
-        hasPiece ?
-          <Piece
-            isSoldier={isSoldier}
-            isBlack={isBlackPiece}
-            hasGuide={hasGuide}
-            isDarkGuide={isDarkGuide}
-            selected={isSoldierSelected}
-          />
-          :
-          <>
-            {hasGuide ? <Guide isDark={isDarkGuide} /> : null}
-          </>
-      }
-    </button>
-  );
-}
-
-export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog, setGameLog}) {
+export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog, resetParent}) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
@@ -89,12 +19,12 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
   };
 
   const isPieceCurrentPlayer = (position) => {
-    return (gameCondition === CannonUtils.GAME_CONDITION.ON) && ((isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
-      (!isBlackTurn && gameState[position[0]][position[1]] === 'W'));
+    return (isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
+      (!isBlackTurn && gameState[position[0]][position[1]] === 'W');
   }
 
   const selectSquare = (position) => {
-    if (isPieceCurrentPlayer(position)) {
+    if (isPieceCurrentPlayer(position) && (gameCondition === CannonUtils.GAME_CONDITION.ON)) {
       setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
       setSelectedPosition(position);
     } else {
@@ -156,7 +86,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
     } else if(gameCondition === CannonUtils.GAME_CONDITION.OFF) {
       reset();
       setCounter(-1);
-      setGameLog([]);
+      resetParent();
     }
   }, [counter]);
   

@@ -9,11 +9,22 @@ export default function App() {
   const [savedGameLog, setSavedGameLog] = useState([]);
   const [gameCondition, setGameCondition] = useState(CannonUtils.GAME_CONDITION.OFF);
 
+  const reset = () => {
+    setGameLog([]);
+    setSavedGameLog([]);
+  }
+
+  const addMoveLog = (move) => {
+    let newGameLog = gameLog.slice();
+    newGameLog.push(move);
+    setGameLog(newGameLog);
+  }
+
   useEffect(() => {
     if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
       return;
     } else if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
-      setGameLog([]);
+      reset();
       return;
     } else if (gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
       setGameLog([]);
@@ -40,12 +51,6 @@ export default function App() {
     }, 100);
   }, [gameCondition]);
 
-  const addMoveLog = (move) => {
-    let newGameLog = gameLog.slice();
-    newGameLog.push(move);
-    setGameLog(newGameLog);
-  }
-
   return (
     <>
       <Header />
@@ -59,7 +64,7 @@ export default function App() {
           savedGameLog={savedGameLog}
           setGameCondition={setGameCondition}
           addMoveLog={addMoveLog}
-          setGameLog={setGameLog}
+          resetParent={reset}
         />
         <GameController
           gameLog={gameLog}
