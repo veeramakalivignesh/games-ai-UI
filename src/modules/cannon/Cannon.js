@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import "./Cannon.css";
 import CannonUtils from "./CannonUtils";
 import Square from './CannonComponents';
+import GameUtils from '../../core/GameUtils';
 var _ = require('lodash');
 
+// Cannon game board
 export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog, resetParent}) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
@@ -11,6 +13,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
   const [isBlackTurn, setBlackTurn] = useState(true);
   const [counter, setCounter] = useState(-1);
 
+  // reset all states except counter (for replay logic)
   const reset = () => {
     setGameState(CannonUtils.getInitialGameState());
     setGuideState(CannonUtils.getInitialGuideState());
@@ -23,8 +26,9 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
       (!isBlackTurn && gameState[position[0]][position[1]] === 'W');
   }
 
+  // select a square on click
   const selectSquare = (position) => {
-    if (isPieceCurrentPlayer(position) && (gameCondition === CannonUtils.GAME_CONDITION.ON)) {
+    if (isPieceCurrentPlayer(position) && (gameCondition === GameUtils.GAME_CONDITION.PLAY)) {
       setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
       setSelectedPosition(position);
     } else {
@@ -33,8 +37,9 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
     }
   };
 
+  // TODO need to check move validity
   const executeMove = (moveDict) => {
-    if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
+    if (gameCondition === GameUtils.GAME_CONDITION.PLAY) {
       moveDict.selectedPosition = selectedPosition;
     }
     const newGameState = CannonUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict);
@@ -45,51 +50,63 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
     addMoveLog(CannonUtils.convertMoveDictToString(moveDict));
 
     const newGameCondition = CannonUtils.getGameCondition(newGameState, !isBlackTurn);
-    if(newGameCondition !== CannonUtils.GAME_CONDITION.ON) {
+    if (GameUtils.isGameOverCondition(newGameCondition)) {
       setGameCondition(newGameCondition);
     }
   }
 
+  // animate a given move if valid
   const animateMove = (moveDict) => {
     const delay = 500;
+
+    // show guide after 0.5s
     setTimeout(() => {
       setGuideState(CannonUtils.getGuideStateForMoveAnimation(moveDict));
       setSelectedPosition(moveDict.selectedPosition);
     }, delay);
 
+    // execute move after 1s
     setTimeout(() => {
       executeMove(moveDict);
-      if(gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
+      // increment counter to trigger next move replay
+      if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
         setCounter(counter + 1);
       }
     }, 2 * delay);
   };
 
+  // cleanups while gameCondition changes
   useEffect(() => {
-    if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
+    if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
       reset();
       setCounter(-1);
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
+    } else if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
       reset();
       setCounter(0);
-    } else if (CannonUtils.isGameOverCondition(gameCondition)) {
+    } else if (GameUtils.isGameOverCondition(gameCondition)) {
       setCounter(-1);
     }
   }, [gameCondition]);
 
+  // replay logic - will be executed only when counter changes
   useEffect(() => {
-    if (gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
+    if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
       if (counter >= 0 && counter < savedGameLog.length) {
         const moveDict = CannonUtils.convertMoveStringToDict(savedGameLog[counter]);
         animateMove(moveDict);
       }
-    } else if(gameCondition === CannonUtils.GAME_CONDITION.OFF) {
+    }
+
+    // handle asynch game quit during replay
+    if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
       reset();
       setCounter(-1);
       resetParent();
     }
   }, [counter]);
   
+
+  // render the board
   const rows = []
   for (let i = 0; i < CannonUtils.NUM_ROWS; i++) {
     const squares = []

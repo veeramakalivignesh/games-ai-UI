@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import Cannon from "./modules/cannon/Cannon"
 import Header from "./core/Header";
 import GameController from "./core/GameControler";
-import CannonUtils from './modules/cannon/CannonUtils';
+import GameUtils from './core/GameUtils';
 
 export default function App() {
   const [gameLog, setGameLog] = useState([]);
   const [savedGameLog, setSavedGameLog] = useState([]);
-  const [gameCondition, setGameCondition] = useState(CannonUtils.GAME_CONDITION.OFF);
+  const [gameCondition, setGameCondition] = useState(GameUtils.GAME_CONDITION.OFF);
 
   const reset = () => {
     setGameLog([]);
@@ -21,12 +21,12 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (gameCondition === CannonUtils.GAME_CONDITION.ON) {
+    if (gameCondition === GameUtils.GAME_CONDITION.PLAY) {
       return;
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
+    } else if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
       reset();
       return;
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.REPLAY) {
+    } else if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
       setGameLog([]);
       return;
     }
@@ -34,13 +34,13 @@ export default function App() {
     let alertMessage = "";
     let newGameLog = gameLog.slice();
     newGameLog.push("-----------");
-    if (gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS) {
+    if (gameCondition === GameUtils.GAME_CONDITION.BLACK_WINS) {
       newGameLog.push("Black Wins!");
       alertMessage = "!! GAME OVER --> BLACK WINS !!";
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS) {
+    } else if (gameCondition === GameUtils.GAME_CONDITION.WHITE_WINS) {
       newGameLog.push("White Wins!");
       alertMessage = "!! GAME OVER --> WHITE WINS !!";
-    } else if (gameCondition === CannonUtils.GAME_CONDITION.STALEMATE) {
+    } else if (gameCondition === GameUtils.GAME_CONDITION.STALEMATE) {
       newGameLog.push("Stalemate!");
       alertMessage = "!! GAME OVER --> STALEMATE !!";
     }

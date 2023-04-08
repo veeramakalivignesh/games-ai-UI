@@ -1,8 +1,10 @@
 import { useRef, useEffect } from 'react';
 import CannonUtils from '../modules/cannon/CannonUtils';
+import GameUtils from './GameUtils';
 import "./GameController.css"
 
-export default function GameController({ gameLog, gameCondition, setGameCondition }) {
+// side bar that contains game logs and buttons
+function GameController({ gameLog, gameCondition, setGameCondition }) {
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -10,21 +12,21 @@ export default function GameController({ gameLog, gameCondition, setGameConditio
     });
 
     const startButtonOnclick = () => {
-        if (gameCondition === CannonUtils.GAME_CONDITION.OFF) {
-            setGameCondition(CannonUtils.GAME_CONDITION.ON);
+        if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
+            setGameCondition(GameUtils.GAME_CONDITION.PLAY);
         } else {
             if (window.confirm("All the game content will be lost. Are you sure you want to quit?")) {
-                setGameCondition(CannonUtils.GAME_CONDITION.OFF);
+                setGameCondition(GameUtils.GAME_CONDITION.OFF);
             }
         }
     };
 
     const replayButtonClick = () => {
-        setGameCondition(CannonUtils.GAME_CONDITION.REPLAY);
+        setGameCondition(GameUtils.GAME_CONDITION.REPLAY);
     };
 
     const isReplayEnabled = () => {
-        return CannonUtils.isGameOverCondition(gameCondition);
+        return GameUtils.isGameOverCondition(gameCondition);
     };
 
     let i = 0;
@@ -64,3 +66,5 @@ export default function GameController({ gameLog, gameCondition, setGameConditio
         </div>
     );
 }
+
+export default GameController;

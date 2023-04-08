@@ -1,19 +1,11 @@
-import Game from "./model/Game";
+import CannonGame from "./model/CannonGame";
+import GameUtils from "../../core/GameUtils";
 var _ = require('lodash');
 
 class CannonUtils {
 
     static NUM_ROWS = 8;
     static NUM_COLUMNS = 8;
-
-    static GAME_CONDITION = {
-        BLACK_WINS: "BLACK_WINS",
-        WHITE_WINS: "WHITE_WINS",
-        STALEMATE: "STALEMATE",
-        ON: "ON",
-        OFF: "OFF",
-        REPLAY: "REPLAY"
-    };
 
     static INITIAL_GAME_STATE = [
         ['Tw', 'W', 'Tw', 'W', 'Tw', 'W', 'Tw', 'W'],
@@ -43,13 +35,6 @@ class CannonUtils {
 
     static getInitialGuideState() {
         return  _.cloneDeep(this.INITIAL_GUIDE_STATE);
-    }
-
-    static isGameOverCondition(gameCondition) {
-        return (
-            gameCondition === CannonUtils.GAME_CONDITION.WHITE_WINS ||
-            gameCondition === CannonUtils.GAME_CONDITION.BLACK_WINS ||
-            gameCondition === CannonUtils.GAME_CONDITION.STALEMATE);
     }
 
     static isPositionValid(position) {
@@ -84,7 +69,7 @@ class CannonUtils {
     }
 
     static getGuideStateAfterSelection(gameState, selectedPosition) {
-        const game = new Game(gameState);
+        const game = new CannonGame(gameState);
         const piece = game.getPiece(selectedPosition);
         if(piece  !== 'B' && piece !== 'W') {
             return this.getInitialGuideState();
@@ -113,7 +98,7 @@ class CannonUtils {
     }
 
     static getGameStateAfterMove(gameState, moveDict) {
-        const game = new Game(gameState);
+        const game = new CannonGame(gameState);
 
         if (moveDict.type === 'M') {
             return game.getStateAfterMove(moveDict.selectedPosition, moveDict.targetPosition);
@@ -136,10 +121,10 @@ class CannonUtils {
             }
         }
         if (numBlackTownhalls <= 2) {
-            return this.GAME_CONDITION.WHITE_WINS;
+            return GameUtils.GAME_CONDITION.WHITE_WINS;
         }
         if (numWhiteTownhalls <= 2) {
-            return this.GAME_CONDITION.BLACK_WINS;
+            return GameUtils.GAME_CONDITION.BLACK_WINS;
         }
 
         let soldier = isBlackTurn ? 'B' : 'W';
@@ -148,13 +133,13 @@ class CannonUtils {
                 if (gameState[i][j] === soldier) {
                     let newGuideState = this.getGuideStateAfterSelection(gameState, [i, j]);
                     if (JSON.stringify(newGuideState) !== JSON.stringify(this.getInitialGuideState())) {
-                        return this.GAME_CONDITION.ON;
+                        return GameUtils.GAME_CONDITION.PLAY;
                     }
                 }
             }
         }
 
-        return this.GAME_CONDITION.STALEMATE;
+        return GameUtils.GAME_CONDITION.STALEMATE;
     }
 
     static getGuideStateForMoveAnimation(moveDict) {

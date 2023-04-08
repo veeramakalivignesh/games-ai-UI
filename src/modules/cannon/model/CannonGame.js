@@ -1,7 +1,7 @@
 import CannonUtils from "../CannonUtils";
 import CannonPiece from "./CannonPiece";
 
-class Game {
+class CannonGame {
 
     constructor(gameState) {
         this.state = gameState;
@@ -246,4 +246,4 @@ class Game {
     }
 }
 
-export default Game;
+export default CannonGame;

@@ -1,11 +1,13 @@
 import "./Cannon.css";
 
+// move guides
 function Guide({ isDark }) {
   return (
     <button className={isDark ? 'dot guide-dark' : 'dot guide-red'} />
   );
 }
 
+// soldiers and townhalls
 function Piece({ isSoldier, isBlack, hasGuide, isDarkGuide, selected }) {
   let pieceClass = "";
   if (isSoldier) {
@@ -27,7 +29,8 @@ function Piece({ isSoldier, isBlack, hasGuide, isDarkGuide, selected }) {
   );
 }
 
-export default function Square({ position, squareGameState, squareGuideState, isSoldierSelected, selectSquare, executeMove }) {
+// one square in the grid
+function Square({ position, squareGameState, squareGuideState, isSoldierSelected, selectSquare, executeMove }) {
   let dark = (position[0] + position[1]) % 2 === 1;
   let hasPiece = squareGameState !== 'E';
   let isBlackPiece = (squareGameState === 'B' || squareGameState === 'Tb');
@@ -70,3 +73,4 @@ export default function Square({ position, squareGameState, squareGuideState, is
     </button>
   );
 }
+export default Square;
