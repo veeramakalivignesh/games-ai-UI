@@ -6,7 +6,8 @@ class GameUtils {
         STALEMATE: "STALEMATE",
         PLAY: "PLAY",
         OFF: "OFF",
-        REPLAY: "REPLAY"
+        REPLAY: "REPLAY",
+        PAUSE: "PAUSE"
     };
 
     static isGameOverCondition(gameCondition) {

@@ -11,7 +11,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [isBlackTurn, setBlackTurn] = useState(true);
-  const [counter, setCounter] = useState(-1);
+  const [replayCounter, setReplayCounter] = useState(-1);
 
   // reset all states except counter (for replay logic)
   const reset = () => {
@@ -70,7 +70,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
       executeMove(moveDict);
       // increment counter to trigger next move replay
       if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
-        setCounter(counter + 1);
+        setReplayCounter(replayCounter + 1);
       }
     }, 2 * delay);
   };
@@ -79,32 +79,39 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
   useEffect(() => {
     if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
       reset();
-      setCounter(-1);
+      setReplayCounter(-1);
     } else if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
-      reset();
-      setCounter(0);
+      // kicking off replayfrom start
+      if (replayCounter < 0) {
+        reset();
+        setReplayCounter(0);
+      }
+      // resuming replay after pause
+      else if (replayCounter < savedGameLog.length) {
+        const moveDict = CannonUtils.convertMoveStringToDict(savedGameLog[replayCounter]);
+        animateMove(moveDict);
+      }
     } else if (GameUtils.isGameOverCondition(gameCondition)) {
-      setCounter(-1);
+      setReplayCounter(-1);
     }
   }, [gameCondition]);
 
   // replay logic - will be executed only when counter changes
   useEffect(() => {
     if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
-      if (counter >= 0 && counter < savedGameLog.length) {
-        const moveDict = CannonUtils.convertMoveStringToDict(savedGameLog[counter]);
+      if (replayCounter >= 0 && replayCounter < savedGameLog.length) {
+        const moveDict = CannonUtils.convertMoveStringToDict(savedGameLog[replayCounter]);
         animateMove(moveDict);
       }
     }
-
     // handle asynch game quit during replay
-    if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
+    else if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
       reset();
-      setCounter(-1);
+      setReplayCounter(-1);
       resetParent();
     }
-  }, [counter]);
-  
+  }, [replayCounter]);
+
 
   // render the board
   const rows = []

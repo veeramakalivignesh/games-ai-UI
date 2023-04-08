@@ -7,11 +7,13 @@ import GameUtils from './core/GameUtils';
 export default function App() {
   const [gameLog, setGameLog] = useState([]);
   const [savedGameLog, setSavedGameLog] = useState([]);
+  const [isUnderReplay, setUnderReplay] = useState(false);
   const [gameCondition, setGameCondition] = useState(GameUtils.GAME_CONDITION.OFF);
 
   const reset = () => {
     setGameLog([]);
     setSavedGameLog([]);
+    setUnderReplay(false);
   }
 
   const addMoveLog = (move) => {
@@ -27,7 +29,12 @@ export default function App() {
       reset();
       return;
     } else if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
-      setGameLog([]);
+      if (!isUnderReplay) {
+        setUnderReplay(true);
+        setGameLog([]);
+      }
+      return;
+    } else if (gameCondition === GameUtils.GAME_CONDITION.PAUSE) {
       return;
     }
 
@@ -44,8 +51,11 @@ export default function App() {
       newGameLog.push("Stalemate!");
       alertMessage = "!! GAME OVER --> STALEMATE !!";
     }
+
     setSavedGameLog(gameLog);
     setGameLog(newGameLog);
+    setUnderReplay(false);
+
     setTimeout(() => {
       alert(alertMessage);
     }, 100);

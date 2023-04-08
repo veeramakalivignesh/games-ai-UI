@@ -1,10 +1,9 @@
 import { useRef, useEffect } from 'react';
-import CannonUtils from '../modules/cannon/CannonUtils';
 import GameUtils from './GameUtils';
 import "./GameController.css"
 
 // side bar that contains game logs and buttons
-function GameController({ gameLog, gameCondition, setGameCondition }) {
+function GameController({ gameLog, isUnderReplay, gameCondition, setGameCondition }) {
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -21,12 +20,26 @@ function GameController({ gameLog, gameCondition, setGameCondition }) {
         }
     };
 
+    let replayButtonText = "";
+    if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
+        replayButtonText = "Pause";
+    } else if (gameCondition === GameUtils.GAME_CONDITION.PAUSE) {
+        replayButtonText = "Continue";
+    } else {
+        replayButtonText = "Replay";
+    }
+
     const replayButtonClick = () => {
-        setGameCondition(GameUtils.GAME_CONDITION.REPLAY);
+        if (replayButtonText === "Pause") {
+            setGameCondition(GameUtils.GAME_CONDITION.PAUSE);
+        } else {
+            setGameCondition(GameUtils.GAME_CONDITION.REPLAY);
+        }
     };
 
     const isReplayEnabled = () => {
-        return GameUtils.isGameOverCondition(gameCondition);
+        return (GameUtils.isGameOverCondition(gameCondition) || (gameCondition === GameUtils.GAME_CONDITION.REPLAY)
+            || (gameCondition === GameUtils.GAME_CONDITION.PAUSE));
     };
 
     let i = 0;
@@ -60,7 +73,7 @@ function GameController({ gameLog, gameCondition, setGameCondition }) {
             </div>
             <div>
                 <button className='button' onClick={replayButtonClick} disabled={!isReplayEnabled()}>
-                    Replay
+                    {replayButtonText}
                 </button>
             </div>
         </div>
