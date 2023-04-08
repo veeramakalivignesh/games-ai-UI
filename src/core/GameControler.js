@@ -55,7 +55,7 @@ function GameController({ gameLog, gameCondition, setGameCondition }) {
             </div>
             <div>
                 <button className='button' onClick={startButtonOnclick}>
-                    {gameCondition === CannonUtils.GAME_CONDITION.OFF ? "Start" : "Quit"}
+                    {gameCondition === GameUtils.GAME_CONDITION.OFF ? "Start" : "Quit"}
                 </button>
             </div>
             <div>
