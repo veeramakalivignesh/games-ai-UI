@@ -1,5 +1,5 @@
-import CannonGame from "./model/CannonGame";
-import GameUtils from "../../core/GameUtils";
+import CannonGame from "../model/CannonGame";
+import GameUtils from "../../../core/GameUtils";
 var _ = require('lodash');
 
 class CannonUtils {

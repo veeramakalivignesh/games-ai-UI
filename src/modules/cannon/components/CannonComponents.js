@@ -1,4 +1,4 @@
-import "./Cannon.css";
+import "../Cannon.css";
 
 // move guides
 function Guide({ isDark }) {

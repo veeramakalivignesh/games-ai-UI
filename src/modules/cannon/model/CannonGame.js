@@ -1,4 +1,4 @@
-import CannonUtils from "../CannonUtils";
+import CannonUtils from "../utils/CannonUtils";
 import CannonPiece from "./CannonPiece";
 
 class CannonGame {

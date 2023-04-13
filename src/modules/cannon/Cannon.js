@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import "./Cannon.css";
-import CannonUtils from "./CannonUtils";
-import Square from './CannonComponents';
+import CannonUtils from './utils/CannonUtils';
+import Square from './components/CannonComponents';
 import GameUtils from '../../core/GameUtils';
 var _ = require('lodash');
 
