@@ -4,7 +4,8 @@ class GameUtils {
         BLACK_WINS: "BLACK_WINS",
         WHITE_WINS: "WHITE_WINS",
         STALEMATE: "STALEMATE",
-        PLAY: "PLAY",
+        USER_PLAY: "USER_PLAY",
+        BOT_PLAY: "BOT_PLAY",
         OFF: "OFF",
         REPLAY: "REPLAY",
         PAUSE: "PAUSE"

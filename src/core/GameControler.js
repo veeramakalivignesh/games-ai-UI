@@ -12,7 +12,7 @@ function GameController({ gameLog, isUnderReplay, gameCondition, setGameConditio
 
     const startButtonOnclick = () => {
         if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
-            setGameCondition(GameUtils.GAME_CONDITION.PLAY);
+            setGameCondition(GameUtils.GAME_CONDITION.USER_PLAY);
         } else {
             if (window.confirm("All the game content will be lost. Are you sure you want to quit?")) {
                 setGameCondition(GameUtils.GAME_CONDITION.OFF);

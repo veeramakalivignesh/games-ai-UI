@@ -97,6 +97,24 @@ class CannonUtils {
         return guideState;
     }
 
+    static isMoveValid(gameState, isBlackTurn, moveDict) {
+        const currentPiece = isBlackTurn ? 'B' : 'W';
+        if (!this.isPositionValid(moveDict.selectedPosition) || !this.isPositionValid(moveDict.targetPosition)) {
+            return false;
+        }
+        if (gameState[moveDict.selectedPosition[0]][moveDict.selectedPosition[1]] !== currentPiece) {
+            return false;
+        }
+        const guideState = this.getGuideStateAfterSelection(gameState, moveDict.selectedPosition);
+        if (moveDict.type === 'M') {
+            return guideState[moveDict.targetPosition[0]][moveDict.targetPosition[1]] === 'D';
+        } else if (moveDict.type === 'B') {
+            return guideState[moveDict.targetPosition[0]][moveDict.targetPosition[1]] === 'R';
+        } else {
+            return false;
+        }
+    }
+
     static getGameStateAfterMove(gameState, moveDict) {
         const game = new CannonGame(gameState);
 
@@ -107,7 +125,7 @@ class CannonUtils {
         }
     }
 
-    static getGameCondition(gameState, isBlackTurn) {
+    static getGameCondition(currentGameCondition, gameState, isBlackTurn) {
         let numBlackTownhalls = 0;
         let numWhiteTownhalls = 0;
         for (let row of gameState) {
@@ -133,7 +151,7 @@ class CannonUtils {
                 if (gameState[i][j] === soldier) {
                     let newGuideState = this.getGuideStateAfterSelection(gameState, [i, j]);
                     if (JSON.stringify(newGuideState) !== JSON.stringify(this.getInitialGuideState())) {
-                        return GameUtils.GAME_CONDITION.PLAY;
+                        return currentGameCondition;
                     }
                 }
             }

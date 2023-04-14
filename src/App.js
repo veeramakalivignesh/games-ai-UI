@@ -23,18 +23,16 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (gameCondition === GameUtils.GAME_CONDITION.PLAY) {
-      return;
-    } else if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
+    if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
       reset();
-      return;
     } else if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
       if (!isUnderReplay) {
         setUnderReplay(true);
         setGameLog([]);
       }
-      return;
-    } else if (gameCondition === GameUtils.GAME_CONDITION.PAUSE) {
+    }
+
+    if (!GameUtils.isGameOverCondition(gameCondition)) {
       return;
     }
 

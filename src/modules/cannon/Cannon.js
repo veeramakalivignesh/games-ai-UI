@@ -3,6 +3,8 @@ import "./Cannon.css";
 import CannonUtils from './utils/CannonUtils';
 import Square from './components/CannonComponents';
 import GameUtils from '../../core/GameUtils';
+import axios from 'axios';
+import CannonBotClient from './api/CannonBotClient';
 var _ = require('lodash');
 
 // Cannon game board
@@ -24,11 +26,19 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
   const isPieceCurrentPlayer = (position) => {
     return (isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
       (!isBlackTurn && gameState[position[0]][position[1]] === 'W');
-  }
+  };
+
+  const getGameConditionBasedOnTurn = () => {
+    if (!isBlackTurn) {
+      return GameUtils.GAME_CONDITION.USER_PLAY;
+    } else {
+      return GameUtils.GAME_CONDITION.BOT_PLAY;
+    }
+  };
 
   // select a square on click
   const selectSquare = (position) => {
-    if (isPieceCurrentPlayer(position) && (gameCondition === GameUtils.GAME_CONDITION.PLAY)) {
+    if (isPieceCurrentPlayer(position) && (gameCondition === GameUtils.GAME_CONDITION.USER_PLAY)) {
       setGuideState(CannonUtils.getGuideStateAfterSelection(_.cloneDeep(gameState), position));
       setSelectedPosition(position);
     } else {
@@ -39,9 +49,14 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
 
   // TODO need to check move validity
   const executeMove = (moveDict) => {
-    if (gameCondition === GameUtils.GAME_CONDITION.PLAY) {
+    if (gameCondition === GameUtils.GAME_CONDITION.USER_PLAY) {
       moveDict.selectedPosition = selectedPosition;
     }
+
+    if (!CannonUtils.isMoveValid(_.cloneDeep(gameState), isBlackTurn, moveDict)) {
+      throw Error("Invalid move was given to be executed " + CannonUtils.convertMoveDictToString(moveDict));
+    }
+
     const newGameState = CannonUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict);
     setGameState(newGameState);
     setGuideState(CannonUtils.getInitialGuideState());
@@ -49,14 +64,16 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
     setBlackTurn(!isBlackTurn);
     addMoveLog(CannonUtils.convertMoveDictToString(moveDict));
 
-    const newGameCondition = CannonUtils.getGameCondition(newGameState, !isBlackTurn);
+    const newGameCondition = CannonUtils.getGameCondition(gameCondition, newGameState, !isBlackTurn);
     if (GameUtils.isGameOverCondition(newGameCondition)) {
       setGameCondition(newGameCondition);
+    } else {
+      setGameCondition(getGameConditionBasedOnTurn());
     }
   }
 
   // animate a given move if valid
-  const animateMove = (moveDict) => {
+  const executeMoveWithAnimation = (moveDict) => {
     const delay = 500;
 
     // show guide after 0.5s
@@ -89,10 +106,15 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
       // resuming replay after pause
       else if (replayCounter < savedGameLog.length) {
         const moveDict = CannonUtils.convertMoveStringToDict(savedGameLog[replayCounter]);
-        animateMove(moveDict);
+        executeMoveWithAnimation(moveDict);
       }
     } else if (GameUtils.isGameOverCondition(gameCondition)) {
       setReplayCounter(-1);
+    } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
+      CannonBotClient.fetchBotMove()
+        .then((botMove) => {
+          executeMoveWithAnimation(CannonUtils.convertMoveStringToDict(botMove))
+        });
     }
   }, [gameCondition]);
 
@@ -101,7 +123,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
     if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
       if (replayCounter >= 0 && replayCounter < savedGameLog.length) {
         const moveDict = CannonUtils.convertMoveStringToDict(savedGameLog[replayCounter]);
-        animateMove(moveDict);
+        executeMoveWithAnimation(moveDict);
       }
     }
     // handle asynch game quit during replay
