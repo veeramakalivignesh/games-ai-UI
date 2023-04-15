@@ -16,6 +16,10 @@ export default function App() {
     setUnderReplay(false);
   }
 
+  const getLastMove = () => {
+    return gameLog[gameLog.length-1];
+  }
+
   const addMoveLog = (move) => {
     let newGameLog = gameLog.slice();
     newGameLog.push(move);
@@ -73,6 +77,7 @@ export default function App() {
           setGameCondition={setGameCondition}
           addMoveLog={addMoveLog}
           resetParent={reset}
+          getLastMove={getLastMove}
         />
         <GameController
           gameLog={gameLog}

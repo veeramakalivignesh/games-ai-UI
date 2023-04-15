@@ -3,12 +3,11 @@ import "./Cannon.css";
 import CannonUtils from './utils/CannonUtils';
 import Square from './components/CannonComponents';
 import GameUtils from '../../core/GameUtils';
-import axios from 'axios';
 import CannonBotClient from './api/CannonBotClient';
 var _ = require('lodash');
 
 // Cannon game board
-export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog, resetParent}) {
+export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog, resetParent, getLastMove}) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
@@ -111,9 +110,9 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
     } else if (GameUtils.isGameOverCondition(gameCondition)) {
       setReplayCounter(-1);
     } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
-      CannonBotClient.fetchBotMove()
+      CannonBotClient.fetchBotMove(CannonUtils.invertMove(getLastMove()))
         .then((botMove) => {
-          executeMoveWithAnimation(CannonUtils.convertMoveStringToDict(botMove))
+          executeMoveWithAnimation(CannonUtils.convertMoveStringToDict(CannonUtils.invertMove(botMove)))
         });
     }
   }, [gameCondition]);

@@ -4,9 +4,15 @@ class CannonBotClient {
 
     static URL = "";
 
-    static fetchBotMove = async () => {
-        const response = await axios.get("http://localhost:8000/move");
-        return response.data["move"]
+    static fetchBotMove = async (lastMove) => {
+        const response = await axios({
+            method: 'post',
+            url: 'http://localhost:8000/move',
+            data: {
+                'move': lastMove
+            }
+        });
+        return response.data['move']
     }
 
 }

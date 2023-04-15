@@ -68,6 +68,15 @@ class CannonUtils {
             moveDict.type + " " + moveDict.targetPosition[0] + " " + moveDict.targetPosition[1];
     }
 
+    static invertMove(move) {
+        const moveDict = this.convertMoveStringToDict(move);
+        const newSelectedPosition = [moveDict.selectedPosition[1], moveDict.selectedPosition[0]];
+        const newTargetPosition = [moveDict.targetPosition[1], moveDict.targetPosition[0]];
+        moveDict.selectedPosition = newSelectedPosition;
+        moveDict.targetPosition = newTargetPosition;
+        return this.convertMoveDictToString(moveDict);
+    }
+
     static getGuideStateAfterSelection(gameState, selectedPosition) {
         const game = new CannonGame(gameState);
         const piece = game.getPiece(selectedPosition);
