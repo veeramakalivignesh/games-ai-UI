@@ -110,7 +110,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
     } else if (GameUtils.isGameOverCondition(gameCondition)) {
       setReplayCounter(-1);
     } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
-      CannonBotClient.fetchBotMove(CannonUtils.invertMove(getLastMove()))
+      CannonBotClient.fetchBotMove(gameState, isBlackTurn)
         .then((botMove) => {
           executeMoveWithAnimation(CannonUtils.convertMoveStringToDict(CannonUtils.invertMove(botMove)))
         });
