@@ -12,7 +12,11 @@ function GameController({ gameLog, isUnderReplay, gameCondition, setGameConditio
 
     const startButtonOnclick = () => {
         if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
-            setGameCondition(GameUtils.GAME_CONDITION.USER_PLAY);
+            if (window.confirm("Do you want to be the black player?")) {
+                setGameCondition(GameUtils.GAME_CONDITION.USER_PLAY);
+            } else {
+                setGameCondition(GameUtils.GAME_CONDITION.BOT_PLAY);
+            }
         } else {
             if (window.confirm("All the game content will be lost. Are you sure you want to quit?")) {
                 setGameCondition(GameUtils.GAME_CONDITION.OFF);

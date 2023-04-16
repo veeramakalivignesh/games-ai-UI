@@ -7,7 +7,7 @@ import CannonBotClient from './api/CannonBotClient';
 var _ = require('lodash');
 
 // Cannon game board
-export default function Board({gameCondition, savedGameLog, setGameCondition, addMoveLog, resetParent, getLastMove}) {
+export default function Board({ gameCondition, savedGameLog, setGameCondition, addMoveLog, resetParent, getLastMove }) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
@@ -27,8 +27,10 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
       (!isBlackTurn && gameState[position[0]][position[1]] === 'W');
   };
 
-  const getGameConditionBasedOnTurn = () => {
-    if (!isBlackTurn) {
+  const getGameConditionBasedOnMode = () => {
+    if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
+      return GameUtils.GAME_CONDITION.REPLAY;
+    } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
       return GameUtils.GAME_CONDITION.USER_PLAY;
     } else {
       return GameUtils.GAME_CONDITION.BOT_PLAY;
@@ -67,7 +69,7 @@ export default function Board({gameCondition, savedGameLog, setGameCondition, ad
     if (GameUtils.isGameOverCondition(newGameCondition)) {
       setGameCondition(newGameCondition);
     } else {
-      setGameCondition(getGameConditionBasedOnTurn());
+      setGameCondition(getGameConditionBasedOnMode());
     }
   }
 
