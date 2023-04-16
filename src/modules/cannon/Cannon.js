@@ -7,7 +7,7 @@ import CannonBotClient from './api/CannonBotClient';
 var _ = require('lodash');
 
 // Cannon game board
-export default function Board({ gameCondition, savedGameLog, setGameCondition, addMoveLog, resetParent, getLastMove }) {
+export default function Board({ gameCondition, savedGameLog, gameMode, setGameCondition, addMoveLog, resetParent, getLastMove }) {
   const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
   const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
   const [selectedPosition, setSelectedPosition] = useState(null);
@@ -30,10 +30,18 @@ export default function Board({ gameCondition, savedGameLog, setGameCondition, a
   const getGameConditionBasedOnMode = () => {
     if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
       return GameUtils.GAME_CONDITION.REPLAY;
-    } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
+    } else if (gameCondition === GameUtils.GAME_CONDITION.PAUSE) {
+      return GameUtils.GAME_CONDITION.PAUSE;
+    }
+
+    if (gameMode === GameUtils.GAME_MODE.PLAYER_PLAYER) {
       return GameUtils.GAME_CONDITION.USER_PLAY;
-    } else {
-      return GameUtils.GAME_CONDITION.BOT_PLAY;
+    } else if (gameMode === GameUtils.GAME_MODE.BOT_PLAYER) {
+      if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
+        return GameUtils.GAME_CONDITION.USER_PLAY;
+      } else {
+        return GameUtils.GAME_CONDITION.BOT_PLAY;
+      }
     }
   };
 
@@ -133,6 +141,9 @@ export default function Board({ gameCondition, savedGameLog, setGameCondition, a
       setReplayCounter(-1);
       resetParent();
     }
+    // something is changing game condition to replay immedeately after counter update
+    console.log(gameCondition);
+    console.log(replayCounter);
   }, [replayCounter]);
 
 

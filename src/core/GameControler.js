@@ -1,9 +1,9 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import GameUtils from './GameUtils';
 import "./GameController.css"
 
 // side bar that contains game logs and buttons
-function GameController({ gameLog, isUnderReplay, gameCondition, setGameCondition }) {
+function GameController({ gameLog, gameMode, gameCondition, setGameCondition, setGameMode }) {
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -12,10 +12,14 @@ function GameController({ gameLog, isUnderReplay, gameCondition, setGameConditio
 
     const startButtonOnclick = () => {
         if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
-            if (window.confirm("Do you want to be the black player?")) {
+            if (gameMode === GameUtils.GAME_MODE.PLAYER_PLAYER) {
                 setGameCondition(GameUtils.GAME_CONDITION.USER_PLAY);
-            } else {
-                setGameCondition(GameUtils.GAME_CONDITION.BOT_PLAY);
+            } else if (gameMode === GameUtils.GAME_MODE.BOT_PLAYER) {
+                if (window.confirm("Do you want to be the black player?")) {
+                    setGameCondition(GameUtils.GAME_CONDITION.USER_PLAY);
+                } else {
+                    setGameCondition(GameUtils.GAME_CONDITION.BOT_PLAY);
+                }
             }
         } else {
             if (window.confirm("All the game content will be lost. Are you sure you want to quit?")) {
@@ -46,6 +50,10 @@ function GameController({ gameLog, isUnderReplay, gameCondition, setGameConditio
             || (gameCondition === GameUtils.GAME_CONDITION.PAUSE));
     };
 
+    const handleDropdownChange = (event) => {
+        setGameMode(event.target.value);
+    };
+
     let i = 0;
     const gameLogComponent = [];
     for (let log of gameLog) {
@@ -69,6 +77,17 @@ function GameController({ gameLog, isUnderReplay, gameCondition, setGameConditio
             </div>
             <div className='game-log-box' ref={containerRef}>
                 {gameLogComponent}
+            </div>
+            <div>
+                <select className='button dropdown'
+                    disabled={!(gameCondition === GameUtils.GAME_CONDITION.OFF)}
+                    value={gameMode}
+                    onChange={handleDropdownChange}>
+
+                    <option value={GameUtils.GAME_MODE.PLAYER_PLAYER}>PlayerVsPlayer</option>
+                    <option value={GameUtils.GAME_MODE.BOT_PLAYER}>BotVsPlayer</option>
+
+                </select>
             </div>
             <div>
                 <button className='button' onClick={startButtonOnclick}>

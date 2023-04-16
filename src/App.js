@@ -9,6 +9,7 @@ export default function App() {
   const [savedGameLog, setSavedGameLog] = useState([]);
   const [isUnderReplay, setUnderReplay] = useState(false);
   const [gameCondition, setGameCondition] = useState(GameUtils.GAME_CONDITION.OFF);
+  const [gameMode, setGameMode] = useState(GameUtils.GAME_MODE.PLAYER_PLAYER);
 
   const reset = () => {
     setGameLog([]);
@@ -74,6 +75,7 @@ export default function App() {
         <Cannon
           gameCondition={gameCondition}
           savedGameLog={savedGameLog}
+          gameMode={gameMode}
           setGameCondition={setGameCondition}
           addMoveLog={addMoveLog}
           resetParent={reset}
@@ -82,7 +84,9 @@ export default function App() {
         <GameController
           gameLog={gameLog}
           gameCondition={gameCondition}
+          gameMode={gameMode}
           setGameCondition={setGameCondition}
+          setGameMode={setGameMode}
         />
       </div>
     </>

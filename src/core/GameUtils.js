@@ -11,6 +11,13 @@ class GameUtils {
         PAUSE: "PAUSE"
     };
 
+    static GAME_MODE = {
+        PLAYER_PLAYER: "PLAYER_PLAYER",
+        BOT_PLAYER: "BOT_PLAYER",
+        BOT_BOT: "BOT_BOT"
+    };
+
+
     static isGameOverCondition(gameCondition) {
         return (
             gameCondition === this.GAME_CONDITION.WHITE_WINS ||
