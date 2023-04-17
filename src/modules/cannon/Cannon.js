@@ -27,20 +27,16 @@ export default function Board({ gameCondition, savedGameLog, gameMode, setGameCo
       (!isBlackTurn && gameState[position[0]][position[1]] === 'W');
   };
 
-  const getGameConditionBasedOnMode = () => {
-    if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
-      return GameUtils.GAME_CONDITION.REPLAY;
-    } else if (gameCondition === GameUtils.GAME_CONDITION.PAUSE) {
-      return GameUtils.GAME_CONDITION.PAUSE;
+  const updateGameConditionBasedOnMode = () => {
+    if ((gameCondition !== GameUtils.GAME_CONDITION.USER_PLAY) && (gameCondition !== GameUtils.GAME_CONDITION.BOT_PLAY)) {
+      return;
     }
 
-    if (gameMode === GameUtils.GAME_MODE.PLAYER_PLAYER) {
-      return GameUtils.GAME_CONDITION.USER_PLAY;
-    } else if (gameMode === GameUtils.GAME_MODE.BOT_PLAYER) {
+    if (gameMode === GameUtils.GAME_MODE.BOT_PLAYER) {
       if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
-        return GameUtils.GAME_CONDITION.USER_PLAY;
+        setGameCondition(GameUtils.GAME_CONDITION.USER_PLAY);
       } else {
-        return GameUtils.GAME_CONDITION.BOT_PLAY;
+        setGameCondition(GameUtils.GAME_CONDITION.BOT_PLAY);
       }
     }
   };
@@ -77,7 +73,7 @@ export default function Board({ gameCondition, savedGameLog, gameMode, setGameCo
     if (GameUtils.isGameOverCondition(newGameCondition)) {
       setGameCondition(newGameCondition);
     } else {
-      setGameCondition(getGameConditionBasedOnMode());
+      updateGameConditionBasedOnMode();
     }
   }
 
@@ -141,9 +137,6 @@ export default function Board({ gameCondition, savedGameLog, gameMode, setGameCo
       setReplayCounter(-1);
       resetParent();
     }
-    // something is changing game condition to replay immedeately after counter update
-    console.log(gameCondition);
-    console.log(replayCounter);
   }, [replayCounter]);
 
 
