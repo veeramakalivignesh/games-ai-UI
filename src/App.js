@@ -5,90 +5,85 @@ import GameController from "./core/GameControler";
 import GameUtils from './core/GameUtils';
 
 export default function App() {
-  const [gameLog, setGameLog] = useState([]);
-  const [savedGameLog, setSavedGameLog] = useState([]);
-  const [isUnderReplay, setUnderReplay] = useState(false);
-  const [gameCondition, setGameCondition] = useState(GameUtils.GAME_CONDITION.OFF);
-  const [gameMode, setGameMode] = useState(GameUtils.GAME_MODE.PLAYER_PLAYER);
+    const [gameLog, setGameLog] = useState([]);
+    const [savedGameLog, setSavedGameLog] = useState([]);
+    const [isUnderReplay, setUnderReplay] = useState(false);
+    const [gameCondition, setGameCondition] = useState(GameUtils.GAME_CONDITION.OFF);
+    const [gameMode, setGameMode] = useState(GameUtils.GAME_MODE.PLAYER_PLAYER);
 
-  const reset = () => {
-    setGameLog([]);
-    setSavedGameLog([]);
-    setUnderReplay(false);
-  }
-
-  const getLastMove = () => {
-    return gameLog[gameLog.length-1];
-  }
-
-  const addMoveLog = (move) => {
-    let newGameLog = gameLog.slice();
-    newGameLog.push(move);
-    setGameLog(newGameLog);
-  }
-
-  useEffect(() => {
-    if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
-      reset();
-    } else if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
-      if (!isUnderReplay) {
-        setUnderReplay(true);
+    const reset = () => {
         setGameLog([]);
-      }
+        setSavedGameLog([]);
+        setUnderReplay(false);
     }
 
-    if (!GameUtils.isGameOverCondition(gameCondition)) {
-      return;
+    const addMoveLog = (move) => {
+        let newGameLog = gameLog.slice();
+        newGameLog.push(move);
+        setGameLog(newGameLog);
     }
 
-    let alertMessage = "";
-    let newGameLog = gameLog.slice();
-    newGameLog.push("-----------");
-    if (gameCondition === GameUtils.GAME_CONDITION.BLACK_WINS) {
-      newGameLog.push("Black Wins!");
-      alertMessage = "!! GAME OVER --> BLACK WINS !!";
-    } else if (gameCondition === GameUtils.GAME_CONDITION.WHITE_WINS) {
-      newGameLog.push("White Wins!");
-      alertMessage = "!! GAME OVER --> WHITE WINS !!";
-    } else if (gameCondition === GameUtils.GAME_CONDITION.STALEMATE) {
-      newGameLog.push("Stalemate!");
-      alertMessage = "!! GAME OVER --> STALEMATE !!";
-    }
+    useEffect(() => {
+        if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
+            reset();
+        } else if (gameCondition === GameUtils.GAME_CONDITION.REPLAY) {
+            if (!isUnderReplay) {
+                setUnderReplay(true);
+                setGameLog([]);
+            }
+        }
 
-    setSavedGameLog(gameLog);
-    setGameLog(newGameLog);
-    setUnderReplay(false);
+        if (!GameUtils.isGameOverCondition(gameCondition)) {
+            return;
+        }
 
-    setTimeout(() => {
-      alert(alertMessage);
-    }, 100);
-  }, [gameCondition]);
+        let alertMessage = "";
+        let newGameLog = gameLog.slice();
+        newGameLog.push("-----------");
+        if (gameCondition === GameUtils.GAME_CONDITION.BLACK_WINS) {
+            newGameLog.push("Black Wins!");
+            alertMessage = "!! GAME OVER --> BLACK WINS !!";
+        } else if (gameCondition === GameUtils.GAME_CONDITION.WHITE_WINS) {
+            newGameLog.push("White Wins!");
+            alertMessage = "!! GAME OVER --> WHITE WINS !!";
+        } else if (gameCondition === GameUtils.GAME_CONDITION.STALEMATE) {
+            newGameLog.push("Stalemate!");
+            alertMessage = "!! GAME OVER --> STALEMATE !!";
+        }
 
-  return (
-    <>
-      <Header />
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: '40px'
-      }}>
-        <Cannon
-          gameCondition={gameCondition}
-          savedGameLog={savedGameLog}
-          gameMode={gameMode}
-          setGameCondition={setGameCondition}
-          addMoveLog={addMoveLog}
-          resetParent={reset}
-          getLastMove={getLastMove}
-        />
-        <GameController
-          gameLog={gameLog}
-          gameCondition={gameCondition}
-          gameMode={gameMode}
-          setGameCondition={setGameCondition}
-          setGameMode={setGameMode}
-        />
-      </div>
-    </>
-  );
+        setSavedGameLog(gameLog);
+        setGameLog(newGameLog);
+        setUnderReplay(false);
+
+        setTimeout(() => {
+            alert(alertMessage);
+        }, 100);
+    }, [gameCondition]);
+
+    return (
+        <>
+            <Header />
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '40px'
+            }}>
+                <Cannon
+                    gameCondition={gameCondition}
+                    savedGameLog={savedGameLog}
+                    gameMode={gameMode}
+                    setGameCondition={setGameCondition}
+                    addMoveLog={addMoveLog}
+                    resetParent={reset}
+                />
+                <GameController
+                    gameLog={gameLog}
+                    gameCondition={gameCondition}
+                    gameMode={gameMode}
+                    setGameCondition={setGameCondition}
+                    setGameMode={setGameMode}
+                />
+            </div>
+        </>
+    );
 }

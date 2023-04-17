@@ -7,7 +7,7 @@ import CannonBotClient from './api/CannonBotClient';
 var _ = require('lodash');
 
 // Cannon game board
-export default function Board({ gameCondition, savedGameLog, gameMode, setGameCondition, addMoveLog, resetParent, getLastMove }) {
+export default function Board({ gameCondition, savedGameLog, gameMode, setGameCondition, addMoveLog, resetParent }) {
     const [gameState, setGameState] = useState(CannonUtils.getInitialGameState());
     const [guideState, setGuideState] = useState(CannonUtils.getInitialGuideState());
     const [selectedPosition, setSelectedPosition] = useState(null);
