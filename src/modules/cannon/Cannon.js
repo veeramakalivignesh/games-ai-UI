@@ -76,15 +76,15 @@ export default function Board({ gameCondition, savedGameLog, gameMode, setGameCo
         }
     }
 
-    // animate a given move if valid
+    /**
+     * animate a given move if valid 
+     * 
+     * setTimeout does not use the current state value, it uses the initial one.
+     * One needs to keep this in mind while handling aynchronous state changes
+     * like button clicks inside of this function
+     */
     const executeMoveWithAnimation = (moveDict) => {
         const delay = 500;
-
-        /**
-         * setTimeout does not use the current state value, it uses the initial one
-         * One needs to keep this in mind while handling aynchronous state changes
-         * like button clicks  
-         */
 
         // show guide after 0.5s
         setTimeout(() => {
