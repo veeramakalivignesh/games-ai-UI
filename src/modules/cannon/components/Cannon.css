@@ -50,12 +50,12 @@
     border-color: white;
 }
 
-.guide-dark {
+.marker-dark {
     background-color: #35230a;
     border: 1px solid #35230a;
 }
 
-.guide-red {
+.marker-red {
     background-color: #8b0000;
     border: 1px solid #8b0000;
 }

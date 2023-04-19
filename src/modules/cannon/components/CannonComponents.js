@@ -1,14 +1,14 @@
-import "../Cannon.css";
+import "./Cannon.css";
 
-// move guides
-function Guide({ isDark }) {
+// move target markers
+function Marker({ isDark }) {
     return (
-        <button className={isDark ? 'dot guide-dark' : 'dot guide-red'} />
+        <button className={isDark ? 'dot marker-dark' : 'dot marker-red'} />
     );
 }
 
 // soldiers and townhalls
-function Piece({ isSoldier, isBlack, hasGuide, isDarkGuide, selected }) {
+function Piece({ isSoldier, isBlack, hasMarker, isDarkMarker, selected }) {
     let pieceClass = "";
     if (isSoldier) {
         if (isBlack) {
@@ -24,25 +24,25 @@ function Piece({ isSoldier, isBlack, hasGuide, isDarkGuide, selected }) {
         <button
             className={pieceClass}
         >
-            {hasGuide ? <Guide isDark={isDarkGuide} /> : null}
+            {hasMarker ? <Marker isDark={isDarkMarker} /> : null}
         </button>
     );
 }
 
 // one square in the grid
-function Square({ position, squareGameState, squareGuideState, isSoldierSelected, selectSquare, executeMove }) {
+function Square({ position, squareGameState, squareMarkerState, isSoldierSelected, selectedPosition, selectSquare, executeMove }) {
     let dark = (position[0] + position[1]) % 2 === 1;
     let hasPiece = squareGameState !== 'E';
     let isBlackPiece = (squareGameState === 'B' || squareGameState === 'Tb');
     let isSoldier = (squareGameState === 'B' || squareGameState === 'W')
-    let hasGuide = squareGuideState !== 'N';
-    let isDarkGuide = squareGuideState === 'D';
+    let hasMarker = squareMarkerState !== 'N';
+    let isDarkMarker = squareMarkerState === 'D';
 
     function handleClick() {
-        if (hasGuide) {
+        if (hasMarker) {
             const moveDict = {
-                type: isDarkGuide ? 'M' : 'B',
-                selectedPosition: null,
+                type: isDarkMarker ? 'M' : 'B',
+                selectedPosition: selectedPosition,
                 targetPosition: position
             };
             executeMove(moveDict);
@@ -61,13 +61,13 @@ function Square({ position, squareGameState, squareGuideState, isSoldierSelected
                     <Piece
                         isSoldier={isSoldier}
                         isBlack={isBlackPiece}
-                        hasGuide={hasGuide}
-                        isDarkGuide={isDarkGuide}
+                        hasMarker={hasMarker}
+                        isDarkMarker={isDarkMarker}
                         selected={isSoldierSelected}
                     />
                     :
                     <>
-                        {hasGuide ? <Guide isDark={isDarkGuide} /> : null}
+                        {hasMarker ? <Marker isDark={isDarkMarker} /> : null}
                     </>
             }
         </button>

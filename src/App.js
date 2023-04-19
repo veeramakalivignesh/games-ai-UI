@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import Cannon from "./modules/cannon/Cannon"
+import GameBoard from './core/GameBoard/GameBoard';
 import Header from "./core/Header";
-import GameController from "./core/GameControler";
-import GameUtils from './core/GameUtils';
+import GameController from "./core/GameController/GameController";
+import GameUtils from './core/utils/GameUtils';
 
 export default function App() {
     const [gameLog, setGameLog] = useState([]);
@@ -68,7 +68,7 @@ export default function App() {
                 justifyContent: 'center',
                 marginTop: '40px'
             }}>
-                <Cannon
+                <GameBoard
                     gameCondition={gameCondition}
                     savedGameLog={savedGameLog}
                     gameMode={gameMode}

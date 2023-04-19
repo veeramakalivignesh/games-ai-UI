@@ -1,5 +1,5 @@
 import { useRef, useEffect} from 'react';
-import GameUtils from './GameUtils';
+import GameUtils from '../utils/GameUtils';
 import "./GameController.css"
 
 // side bar that contains game logs and buttons

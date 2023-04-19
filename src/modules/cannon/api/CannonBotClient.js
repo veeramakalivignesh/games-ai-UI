@@ -1,13 +1,21 @@
 import axios from "axios";
+import BotClient from "../../../core/api/BotClient";
 
-class CannonBotClient {
+class CannonBotClient extends BotClient {
 
-    static URL = "";
+    static URL = 'http://localhost:8000';
 
-    static fetchBotMove = async (gameState, isBlackTurn) => {
+    constructor() { 
+        super();
+    }
+
+    /**
+     * @override
+     */
+    fetchBotMove = async (gameState, isBlackTurn) => {
         const response = await axios({
             method: 'post',
-            url: 'http://localhost:8000/move',
+            url: CannonBotClient.URL + '/move',
             data: {
                 'gameState': gameState,
                 'isBlackTurn': isBlackTurn
