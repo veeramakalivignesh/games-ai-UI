@@ -4,7 +4,13 @@ import Square from './CannonComponents';
 import GameUtils from "../../../core/utils/GameUtils";
 var _ = require('lodash');
 
-// Cannon game board
+/**
+ * This is functional react component that defines
+ * the Cannon game board and its UI
+ * 
+ * @author cant12 
+ */
+
 export default function Cannon({ gameState, guideState, isBlackTurn, gameCondition, setGuideState, executeMove}) {
     const cannonUtils = new CannonUtils();
 

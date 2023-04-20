@@ -2,7 +2,13 @@ import { useRef, useEffect} from 'react';
 import GameUtils from '../utils/GameUtils';
 import "./GameController.css"
 
-// side bar that contains game logs and buttons
+/**
+ * This is a functional react component to display
+ * the side bar that contains game logs and buttons
+ * 
+ * @author cant12
+ */
+
 function GameController({ gameLog, gameMode, gameCondition, setGameCondition, setGameMode }) {
     const containerRef = useRef(null);
 

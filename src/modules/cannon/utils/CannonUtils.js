@@ -2,6 +2,15 @@ import CannonGame from "../model/CannonGame";
 import GameUtils from "../../../core/utils/GameUtils";
 var _ = require('lodash');
 
+/**
+ * This class contians all util functions necassary for the UI
+ * and other calculations for the Cannon game
+ * 
+ * @extends GameUtils
+ * 
+ * @author cant12
+ */
+
 class CannonUtils extends GameUtils {
 
     static NUM_ROWS = 8;

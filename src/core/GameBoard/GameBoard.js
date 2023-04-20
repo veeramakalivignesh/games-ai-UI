@@ -2,11 +2,16 @@ import { useEffect, useState } from 'react';
 import CannonUtils from '../../modules/cannon/utils/CannonUtils';
 import CannonBotClient from '../../modules/cannon/api/CannonBotClient';
 import Cannon from '../../modules/cannon/components/Cannon';
-import BotClient from '../api/BotClient';
 import GameUtils from '../utils/GameUtils';
 var _ = require('lodash');
 
-// Game board
+/**
+ * This is a functional react component that contains all the game
+ * independent generic methods required for the game board UI
+ * 
+ * @author cant12
+ */
+
 export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGameCondition, addMoveLog, resetParent }) {
     const gameUtils = new CannonUtils();
     const botClient = new CannonBotClient();
@@ -23,6 +28,7 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
         setBlackTurn(true);
     };
 
+    // updates game condition after a move is been executed
     const updateGameConditionBasedOnMode = () => {
         if ((gameCondition !== GameUtils.GAME_CONDITION.USER_PLAY) && (gameCondition !== GameUtils.GAME_CONDITION.BOT_PLAY)) {
             return;
@@ -81,7 +87,7 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
         }, 2 * delay);
     };
 
-    // cleanups while gameCondition changes
+    // actions while gameCondition changes
     useEffect(() => {
         if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
             reset();

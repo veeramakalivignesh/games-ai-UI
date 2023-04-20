@@ -1,6 +1,15 @@
 import axios from "axios";
 import BotClient from "../../../core/api/BotClient";
 
+/**
+ * This class contians apis to call the
+ * CannonBot backend server
+ * 
+ * @extends BotClient
+ * 
+ * @author cant12
+ */
+
 class CannonBotClient extends BotClient {
 
     static URL = 'http://localhost:8000';
