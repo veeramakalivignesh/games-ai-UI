@@ -95,17 +95,7 @@ class CannonUtils extends GameUtils {
         return "S " + moveDict.selectedPosition[0] + " " + moveDict.selectedPosition[1] + " " +
             moveDict.type + " " + moveDict.targetPosition[0] + " " + moveDict.targetPosition[1];
     }
-
-    // remove
-    invertMove(move) {
-        const moveDict = this.convertMoveStringToDict(move);
-        const newSelectedPosition = [moveDict.selectedPosition[1], moveDict.selectedPosition[0]];
-        const newTargetPosition = [moveDict.targetPosition[1], moveDict.targetPosition[0]];
-        moveDict.selectedPosition = newSelectedPosition;
-        moveDict.targetPosition = newTargetPosition;
-        return this.convertMoveDictToString(moveDict);
-    }
-
+    
     /**
      * gets a guide state after selection
      * 

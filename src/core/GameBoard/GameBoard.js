@@ -108,7 +108,7 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
         } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
             botClient.fetchBotMove(gameState, isBlackTurn)
                 .then((botMove) => {
-                    executeMoveWithAnimation(gameUtils.convertMoveStringToDict(gameUtils.invertMove(botMove)))
+                    executeMoveWithAnimation(gameUtils.convertMoveStringToDict(botMove))
                 });
         }
     }, [gameCondition]);
