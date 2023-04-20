@@ -24,7 +24,15 @@ function GameController({ gameLog, gameMode, gameCondition, setGameCondition, se
                 if (window.confirm("Do you want to be the black player?")) {
                     setGameCondition(GameUtils.GAME_CONDITION.USER_PLAY);
                 } else {
-                    setGameCondition(GameUtils.GAME_CONDITION.BOT_PLAY);
+                    setGameCondition(GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY);
+                }
+            } else if (gameMode === GameUtils.GAME_MODE.BOT_BOT) {
+                if (window.confirm("In BotVsBot mode, primary and secondary bots will be playing " +
+                    "against each other. These will be configured on the server side.\n\n" +
+                    "Do you want the primary bot to be the black player?")) {
+                    setGameCondition(GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY);
+                } else {
+                    setGameCondition(GameUtils.GAME_CONDITION.BOT_SECONDARY_PLAY);
                 }
             }
         } else {
@@ -92,6 +100,7 @@ function GameController({ gameLog, gameMode, gameCondition, setGameCondition, se
 
                     <option value={GameUtils.GAME_MODE.PLAYER_PLAYER}>PlayerVsPlayer</option>
                     <option value={GameUtils.GAME_MODE.BOT_PLAYER}>BotVsPlayer</option>
+                    <option value={GameUtils.GAME_MODE.BOT_BOT}>BotVsBot</option>
 
                 </select>
             </div>

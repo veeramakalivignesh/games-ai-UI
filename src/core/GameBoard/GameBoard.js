@@ -30,14 +30,23 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
 
     // updates game condition after a move is been executed
     const updateGameConditionBasedOnMode = () => {
-        if ((gameCondition !== GameUtils.GAME_CONDITION.USER_PLAY) && (gameCondition !== GameUtils.GAME_CONDITION.BOT_PLAY)) {
+        if ((gameCondition !== GameUtils.GAME_CONDITION.USER_PLAY) &&
+            (gameCondition !== GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY) &&
+            (gameCondition !== GameUtils.GAME_CONDITION.BOT_SECONDARY_PLAY)) {
             return;
         }
+
         if (gameMode === GameUtils.GAME_MODE.BOT_PLAYER) {
-            if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
+            if (gameCondition === GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY) {
                 setGameCondition(GameUtils.GAME_CONDITION.USER_PLAY);
             } else {
-                setGameCondition(GameUtils.GAME_CONDITION.BOT_PLAY);
+                setGameCondition(GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY);
+            }
+        } else if (gameMode === GameUtils.GAME_MODE.BOT_BOT) {
+            if (gameCondition === GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY) {
+                setGameCondition(GameUtils.GAME_CONDITION.BOT_SECONDARY_PLAY);
+            } else {
+                setGameCondition(GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY);
             }
         }
     };
@@ -105,8 +114,13 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
             }
         } else if (GameUtils.isGameOverCondition(gameCondition)) {
             setReplayCounter(-1);
-        } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PLAY) {
-            botClient.fetchBotMove(gameState, isBlackTurn)
+        } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY) {
+            botClient.fetchPrimaryBotMove(gameState, isBlackTurn)
+                .then((botMove) => {
+                    executeMoveWithAnimation(gameUtils.convertMoveStringToDict(botMove))
+                });
+        } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_SECONDARY_PLAY) {
+            botClient.fetchSecondaryBotMove(gameState, isBlackTurn)
                 .then((botMove) => {
                     executeMoveWithAnimation(gameUtils.convertMoveStringToDict(botMove))
                 });

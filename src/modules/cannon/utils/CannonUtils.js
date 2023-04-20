@@ -194,7 +194,7 @@ class CannonUtils extends GameUtils {
             for (let j = 0; j < CannonUtils.NUM_COLUMNS; j++) {
                 if (gameState[i][j] === soldier) {
                     let newGuideState = this.getGuideStateAfterSelection(gameState, [i, j]);
-                    if (JSON.stringify(newGuideState) !== JSON.stringify(this.getInitialGuideState())) {
+                    if (JSON.stringify(newGuideState.targetsMarkerState) !== JSON.stringify(this.getInitialGuideState().targetsMarkerState)) {
                         return currentGameCondition;
                     }
                 }

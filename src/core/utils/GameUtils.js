@@ -14,7 +14,8 @@ class GameUtils {
         WHITE_WINS: "WHITE_WINS",
         STALEMATE: "STALEMATE",
         USER_PLAY: "USER_PLAY",
-        BOT_PLAY: "BOT_PLAY",
+        BOT_PRIMARY_PLAY: "BOT_PRIMARY_PLAY",
+        BOT_SECONDARY_PLAY: "BOT_SECONDARY_PLAY",
         OFF: "OFF",
         REPLAY: "REPLAY",
         PAUSE: "PAUSE"

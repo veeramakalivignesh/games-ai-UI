@@ -12,14 +12,26 @@ class BotClient {
     constructor() { }
 
     /**
-     * calls backend api to fetch the bot move
+     * calls backend api to fetch the primary bot move
      * 
      * @param {list} gameState 
      * @param {boolean} isBlackTurn
      * 
      * @returns {Promise<string>}
      */
-    fetchBotMove = async (gameState, isBlackTurn) => { 
+    fetchPrimaryBotMove = async (gameState, isBlackTurn) => { 
+        throw Error("This function is not implemented");
+    }
+
+    /**
+     * calls backend api to fetch the secondary bot move
+     * 
+     * @param {list} gameState 
+     * @param {boolean} isBlackTurn
+     * 
+     * @returns {Promise<string>}
+     */
+    fetchSecondaryBotMove = async (gameState, isBlackTurn) => { 
         throw Error("This function is not implemented");
     }
 
