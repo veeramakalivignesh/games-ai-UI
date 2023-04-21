@@ -29,6 +29,12 @@ class CannonBotClient extends BotClient {
                 'gameState': gameState,
                 'isBlackTurn': isBlackTurn
             }
+        }).catch((err) => {
+            if (err.response) {
+                alert("Bot responded with a " + err.response.status + " bad response!");
+            } else {
+                alert("Bot is offline!")
+            }
         });
         return response.data['move']
     }
@@ -43,6 +49,12 @@ class CannonBotClient extends BotClient {
             data: {
                 'gameState': gameState,
                 'isBlackTurn': isBlackTurn
+            }
+        }).catch((err) => {
+            if (err.response) {
+                alert("Bot responded with a " + err.response.status + " bad response!");
+            } else {
+                alert("Bot is offline!")
             }
         });
         return response.data['move']

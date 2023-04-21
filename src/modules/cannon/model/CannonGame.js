@@ -27,6 +27,10 @@ class CannonGame {
         return (this.getPiece(position) === 'W' || this.getPiece(position) === 'Tw');
     }
 
+    isSoldier(position) {
+        return (this.getPiece(position) === 'B' || this.getPiece(position) === 'W');
+    }
+
     areOpponents(position0, position1) {
         return (
             (this.isBlackPiece(position0) && this.isWhitePiece(position1)) ||
@@ -170,7 +174,7 @@ class CannonGame {
         let moveTarget = CannonUtils.addPositions(position, [forwardOffset, 0])
         if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
             this.areOpponents(position, moveTarget))) {
-            if (!this.isEmpty(moveTarget)) {
+            if (!this.isEmpty(moveTarget) && this.isSoldier(moveTarget)) {
                 isEnemyPieceAdjacent = true;
             }
             moveTargets.push(moveTarget);
@@ -180,7 +184,7 @@ class CannonGame {
         moveTarget = CannonUtils.addPositions(position, [forwardOffset, 1])
         if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
             this.areOpponents(position, moveTarget))) {
-            if (!this.isEmpty(moveTarget)) {
+            if (!this.isEmpty(moveTarget) && this.isSoldier(moveTarget)) {
                 isEnemyPieceAdjacent = true;
             }
             moveTargets.push(moveTarget);
@@ -189,7 +193,7 @@ class CannonGame {
         moveTarget = CannonUtils.addPositions(position, [forwardOffset, -1])
         if (CannonUtils.isPositionValid(moveTarget) && (this.isEmpty(moveTarget) ||
             this.areOpponents(position, moveTarget))) {
-            if (!this.isEmpty(moveTarget)) {
+            if (!this.isEmpty(moveTarget) && this.isSoldier(moveTarget)) {
                 isEnemyPieceAdjacent = true;
             }
             moveTargets.push(moveTarget);
@@ -198,13 +202,17 @@ class CannonGame {
         // capture 1 step horizontally 
         moveTarget = CannonUtils.addPositions(position, [0, 1])
         if (CannonUtils.isPositionValid(moveTarget) && this.areOpponents(position, moveTarget)) {
-            isEnemyPieceAdjacent = true;
+            if (this.isSoldier(moveTarget)) {
+                isEnemyPieceAdjacent = true;
+            }
             moveTargets.push(moveTarget);
         }
 
         moveTarget = CannonUtils.addPositions(position, [0, -1])
         if (CannonUtils.isPositionValid(moveTarget) && this.areOpponents(position, moveTarget)) {
-            isEnemyPieceAdjacent = true;
+            if (this.isSoldier(moveTarget)) {
+                isEnemyPieceAdjacent = true;
+            }
             moveTargets.push(moveTarget);
         }
 
