@@ -1,5 +1,5 @@
 .game-log-box {
-    height: 430px;
+    height: 375px;
     width: 200px;
     background-color: #d3d3d312;;
     margin-left: 100px;
@@ -54,6 +54,7 @@
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     font-size: 25px;
+    text-align: center;
     transition-duration: 0.4s;
     cursor: pointer;
 }
@@ -67,6 +68,11 @@
 .button:disabled {
     color: #00000079;
     border-color: #00000079;;
+}
+
+.dropdown {
+    border-radius: 15px;
+    font-size: 20px;
 }
 
 .black {
