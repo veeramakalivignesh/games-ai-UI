@@ -9,7 +9,7 @@ export default function App() {
     const [savedGameLog, setSavedGameLog] = useState([]);
     const [isUnderReplay, setUnderReplay] = useState(false);
     const [gameCondition, setGameCondition] = useState(GameUtils.GAME_CONDITION.OFF);
-    const [gameMode, setGameMode] = useState(GameUtils.GAME_MODE.PLAYER_PLAYER);
+    const [gameMode, setGameMode] = useState(GameUtils.GAME_MODE.BOT_PLAYER);
 
     const reset = () => {
         setGameLog([]);
