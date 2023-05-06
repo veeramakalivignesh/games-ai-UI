@@ -82,9 +82,7 @@
     margin-bottom: 10px;
     margin-left: 18px;
     margin-right: 18px;
-    border-radius: 5px;
-    border-color: black;
-    border-style: solid;
+    border-style: outset;
     border-width: 4px;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
@@ -104,9 +102,9 @@
 
 .selected {
     background-color: #d3d3d356;
+    border-style: inset;
 }
 
 .box:disabled {
     color: #00000079;
-    border-color: #00000079;
 }
