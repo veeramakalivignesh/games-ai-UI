@@ -1,6 +1,5 @@
 import CannonGame from "../model/CannonGame";
 import GameUtils from "../../../core/utils/GameUtils";
-var _ = require('lodash');
 
 /**
  * This class contians all util functions necassary for the UI
@@ -8,38 +7,18 @@ var _ = require('lodash');
  * 
  * @extends GameUtils
  * 
- * @author cant12
+ * @author veeramakali.vignesh
  */
 
 class CannonUtils extends GameUtils {
 
-    static NUM_ROWS = 8;
-    static NUM_COLUMNS = 8;
+    static NUM_ROWS;
+    static NUM_COLUMNS;
 
-    static INITIAL_GAME_STATE = [
-        ['Tw', 'W', 'Tw', 'W', 'Tw', 'W', 'Tw', 'W'],
-        ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
-        ['E', 'W', 'E', 'W', 'E', 'W', 'E', 'W'],
-        ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
-        ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
-        ['B', 'E', 'B', 'E', 'B', 'E', 'B', 'E'],
-        ['B', 'E', 'B', 'E', 'B', 'E', 'B', 'E'],
-        ['B', 'Tb', 'B', 'Tb', 'B', 'Tb', 'B', 'Tb']
-    ];
-
-    static INITIAL_GUIDE_STATE = {
-        targetsMarkerState: [
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N']
-        ],
-        selectedPosition: null
-    };
+    static setSize(numRows, numColumns) {
+        CannonUtils.NUM_ROWS = numRows;
+        CannonUtils.NUM_COLUMNS = numColumns;
+    }
 
     static isPositionValid(position) {
         return (position[0] >= 0 && position[0] < this.NUM_ROWS &&
@@ -58,22 +37,63 @@ class CannonUtils extends GameUtils {
         return [scalar * position[0], scalar * position[1]];
     }
 
+    static getRow(arrayUnit, numRepetitions) {
+        let row = [];
+        for (let i = 0; i < numRepetitions; i++) {
+            row = row.concat(arrayUnit);
+        }
+        return row;
+    }
+
     constructor() {
         super();
     }
 
     /**
+     * Tw -> White Townhall
+     * W -> White Soldier
+     * E -> Empty
+     * B -> Black Soldier
+     * Tb -> Black Townhall
+     * 
      * @override
      */
     getInitialGameState() {
-        return _.cloneDeep(CannonUtils.INITIAL_GAME_STATE);
+        const initialGameState = [];
+
+        // white townhalls and soldiers
+        initialGameState.push(CannonUtils.getRow(['Tw', 'W'], CannonUtils.NUM_COLUMNS / 2));
+        initialGameState.push(CannonUtils.getRow(['E', 'W'], CannonUtils.NUM_COLUMNS / 2));
+        initialGameState.push(CannonUtils.getRow(['E', 'W'], CannonUtils.NUM_COLUMNS / 2));
+
+        for (let i = 0; i < CannonUtils.NUM_ROWS - 6; i++) {
+            initialGameState.push(CannonUtils.getRow(['E'], CannonUtils.NUM_COLUMNS));
+        }
+
+        // black townhalls and soldiers
+        initialGameState.push(CannonUtils.getRow(['B', 'E'], CannonUtils.NUM_COLUMNS / 2));
+        initialGameState.push(CannonUtils.getRow(['B', 'E'], CannonUtils.NUM_COLUMNS / 2));
+        initialGameState.push(CannonUtils.getRow(['B', 'Tb'], CannonUtils.NUM_COLUMNS / 2));
+
+        return initialGameState;
     }
 
     /**
+     * N -> No Marker
+     * D -> Dark Marker
+     * R -> Red Marker
+     *
      * @override
      */
     getInitialGuideState() {
-        return  _.cloneDeep(CannonUtils.INITIAL_GUIDE_STATE);
+        const initialGuideState = {
+            targetsMarkerState: [],
+            selectedPosition: null
+        };
+        for (let i = 0; i < CannonUtils.NUM_ROWS; i++) {
+            initialGuideState.targetsMarkerState.push(CannonUtils.getRow(['N'], CannonUtils.NUM_COLUMNS));
+        }
+        return initialGuideState;
     }
 
     /**
@@ -182,10 +202,10 @@ class CannonUtils extends GameUtils {
                 }
             }
         }
-        if (numBlackTownhalls <= 2) {
+        if (numBlackTownhalls <= CannonUtils.NUM_COLUMNS / 2 - 2) {
             return GameUtils.GAME_CONDITION.WHITE_WINS;
         }
-        if (numWhiteTownhalls <= 2) {
+        if (numWhiteTownhalls <= CannonUtils.NUM_COLUMNS / 2 - 2) {
             return GameUtils.GAME_CONDITION.BLACK_WINS;
         }
 

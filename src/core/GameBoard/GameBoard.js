@@ -149,6 +149,7 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
             guideState={guideState}
             isBlackTurn={isBlackTurn}
             gameCondition={gameCondition}
+            setGameState={setGameState}
             setGuideState={setGuideState}
             executeMove={executeMove}
         />

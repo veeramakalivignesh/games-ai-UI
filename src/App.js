@@ -66,7 +66,7 @@ export default function App() {
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
-                marginTop: '40px'
+                marginTop: '20px'
             }}>
                 <GameBoard
                     gameCondition={gameCondition}
