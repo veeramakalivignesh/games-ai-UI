@@ -101,7 +101,6 @@ function GameController({ gameLog, gameMode, gameCondition, setGameCondition, se
                     <option value={GameUtils.GAME_MODE.PLAYER_PLAYER}>PlayerVsPlayer</option>
                     <option value={GameUtils.GAME_MODE.BOT_PLAYER}>BotVsPlayer</option>
                     <option value={GameUtils.GAME_MODE.BOT_BOT}>BotVsBot</option>
-
                 </select>
             </div>
             <div>
