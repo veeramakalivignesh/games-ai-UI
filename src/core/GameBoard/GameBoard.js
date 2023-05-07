@@ -20,6 +20,7 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
     const [guideState, setGuideState] = useState(gameUtils.getInitialGuideState());
     const [isBlackTurn, setBlackTurn] = useState(true);
     const [replayCounter, setReplayCounter] = useState(-1);
+    const [gameStateMap, setGameStateMap] = useState({});
 
     // reset all states except counter (for replay logic)
     const reset = () => {
@@ -58,6 +59,10 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
         }
 
         const newGameState = gameUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict);
+        const newGameStateMap = _.cloneDeep(gameStateMap);
+        newGameStateMap[JSON.stringify(gameState) + isBlackTurn.toString()] = newGameState;
+
+        setGameStateMap(newGameStateMap);
         setGameState(newGameState);
         setGuideState(gameUtils.getInitialGuideState());
         setBlackTurn(!isBlackTurn);
@@ -115,7 +120,13 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
         } else if (GameUtils.isGameOverCondition(gameCondition)) {
             setReplayCounter(-1);
         } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY) {
-            botClient.fetchPrimaryBotMove(gameState, isBlackTurn)
+            let forbiddenState = null;
+            const key = JSON.stringify(gameState) + isBlackTurn.toString();
+            if (key in gameStateMap) {
+                forbiddenState = gameStateMap[key];
+            }
+            console.log(forbiddenState);
+            botClient.fetchPrimaryBotMove(gameState, isBlackTurn, forbiddenState)
                 .then((botMove) => {
                     executeMoveWithAnimation(gameUtils.convertMoveStringToDict(botMove))
                 });
