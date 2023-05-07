@@ -59,8 +59,17 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
         }
 
         const newGameState = gameUtils.getGameStateAfterMove(_.cloneDeep(gameState), moveDict);
+        /**
+         * Map of already visited game states and the corresponding state changes.
+         * These are sent as part of the api request to avoid stagnant game conditions.
+         */
         const newGameStateMap = _.cloneDeep(gameStateMap);
-        newGameStateMap[JSON.stringify(gameState) + isBlackTurn.toString()] = newGameState;
+        const key = JSON.stringify(gameState) + isBlackTurn.toString();
+        if (key in newGameStateMap) {
+            newGameStateMap[key].push(newGameState);
+        } else {
+            newGameStateMap[key] = [newGameState];
+        }
 
         setGameStateMap(newGameStateMap);
         setGameState(newGameState);
@@ -120,18 +129,26 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
         } else if (GameUtils.isGameOverCondition(gameCondition)) {
             setReplayCounter(-1);
         } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_PRIMARY_PLAY) {
-            let forbiddenState = null;
+            // the bot is expected not to output a move that leads to one of the forbidden states
+            let forbiddenStates = [];
             const key = JSON.stringify(gameState) + isBlackTurn.toString();
             if (key in gameStateMap) {
-                forbiddenState = gameStateMap[key];
+                forbiddenStates = gameStateMap[key];
             }
-            console.log(forbiddenState);
-            botClient.fetchPrimaryBotMove(gameState, isBlackTurn, forbiddenState)
+
+            botClient.fetchPrimaryBotMove(gameState, isBlackTurn, forbiddenStates)
                 .then((botMove) => {
                     executeMoveWithAnimation(gameUtils.convertMoveStringToDict(botMove))
                 });
         } else if (gameCondition === GameUtils.GAME_CONDITION.BOT_SECONDARY_PLAY) {
-            botClient.fetchSecondaryBotMove(gameState, isBlackTurn)
+            // the bot is expected not to output a move that leads to one of the forbidden states
+            let forbiddenStates = [];
+            const key = JSON.stringify(gameState) + isBlackTurn.toString();
+            if (key in gameStateMap) {
+                forbiddenStates = gameStateMap[key];
+            }
+
+            botClient.fetchSecondaryBotMove(gameState, isBlackTurn, forbiddenStates)
                 .then((botMove) => {
                     executeMoveWithAnimation(gameUtils.convertMoveStringToDict(botMove))
                 });

@@ -21,14 +21,14 @@ class CannonBotClient extends BotClient {
     /**
      * @override
      */
-    fetchPrimaryBotMove = async (gameState, isBlackTurn, forbiddenState) => {
+    fetchPrimaryBotMove = async (gameState, isBlackTurn, forbiddenStates) => {
         const response = await axios({
             method: 'post',
             url: CannonBotClient.URL + '/primary/move',
             data: {
                 'gameState': gameState,
                 'isBlackTurn': isBlackTurn,
-                'forbiddenState': forbiddenState
+                'forbiddenStates': forbiddenStates
             }
         }).catch((err) => {
             if (err.response) {
@@ -43,13 +43,14 @@ class CannonBotClient extends BotClient {
     /**
      * @override
      */
-    fetchSecondaryBotMove = async (gameState, isBlackTurn) => {
+    fetchSecondaryBotMove = async (gameState, isBlackTurn, forbiddenStates) => {
         const response = await axios({
             method: 'post',
             url: CannonBotClient.URL + '/secondary/move',
             data: {
                 'gameState': gameState,
-                'isBlackTurn': isBlackTurn
+                'isBlackTurn': isBlackTurn,
+                'forbiddenStates': forbiddenStates
             }
         }).catch((err) => {
             if (err.response) {
