@@ -1,6 +1,6 @@
 import axios from "axios";
 import BotClient from "../../../core/api/BotClient";
-import config from "../../../config.json";
+import config from "../../../resources/config.json";
 
 /**
  * This class contians apis to call the
