@@ -1,5 +1,6 @@
 import axios from "axios";
 import BotClient from "../../../core/api/BotClient";
+import config from "../../../config.json";
 
 /**
  * This class contians apis to call the
@@ -12,7 +13,7 @@ import BotClient from "../../../core/api/BotClient";
 
 class CannonBotClient extends BotClient {
 
-    static URL = 'http://localhost:8000';
+    static URL = config.cannon.bot_server_url;
 
     constructor() { 
         super();
