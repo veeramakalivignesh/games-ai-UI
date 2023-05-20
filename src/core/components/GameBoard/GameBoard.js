@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import CannonUtils from '../../modules/cannon/utils/CannonUtils';
-import CannonBotClient from '../../modules/cannon/api/CannonBotClient';
-import Cannon from '../../modules/cannon/components/Cannon';
-import GameUtils from '../utils/GameUtils';
+import CannonUtils from '../../../modules/cannon/utils/CannonUtils';
+import CannonBotClient from '../../../modules/cannon/api/CannonBotClient';
+import Cannon from '../../../modules/cannon/components/Cannon';
+import GameUtils from '../../utils/GameUtils';
 var _ = require('lodash');
 
 /**

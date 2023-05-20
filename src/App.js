@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import GameBoard from './core/GameBoard/GameBoard';
+import GameBoard from './core/components/GameBoard/GameBoard';
 import Header from "./core/Header";
-import GameController from "./core/GameController/GameController";
+import GameController from "./core/components/GameController/GameController";
 import GameUtils from './core/utils/GameUtils';
 
 export default function App() {
