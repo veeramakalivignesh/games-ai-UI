@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import GameBoard from './core/components/GameBoard/GameBoard';
-import Header from "./core/Header";
-import GameController from "./core/components/GameController/GameController";
-import GameUtils from './core/utils/GameUtils';
+import GameBoard from './components/GameBoard/GameBoard';
+import Header from "./Header";
+import GameController from "./components/GameController/GameController";
+import GameUtils from './utils/GameUtils';
 
-export default function App() {
+export default function GameApp() {
     const [gameLog, setGameLog] = useState([]);
     const [savedGameLog, setSavedGameLog] = useState([]);
     const [isUnderReplay, setUnderReplay] = useState(false);
@@ -60,9 +60,15 @@ export default function App() {
         }, 100);
     }, [gameCondition]);
 
+    const gameTitle = "Game of Cannons";
     return (
         <>
             <Header />
+
+            <div className='p-1 text-center'>
+                <h1>{gameTitle}</h1>
+            </div>
+
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',

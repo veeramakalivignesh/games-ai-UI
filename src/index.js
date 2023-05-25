@@ -2,12 +2,24 @@ import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import About from "./core/About.js";
+import GameApp from "./core/GameApp";
 
-import App from "./App";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <About />,
+  },
+  {
+    path: "/cannon",
+    element: <GameApp />,
+  },
+]);
 
 const root = createRoot(document.getElementById("root"));
 root.render(
   <StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </StrictMode>
 );
