@@ -3,6 +3,7 @@ import GameBoard from './components/GameBoard/GameBoard';
 import Header from "./Header";
 import GameController from "./components/GameController/GameController";
 import GameUtils from './utils/GameUtils';
+import Footer from './Footer';
 
 export default function GameApp() {
     const [gameLog, setGameLog] = useState([]);

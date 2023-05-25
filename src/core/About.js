@@ -1,4 +1,5 @@
 import Header from "./Header";
+import Footer from "./Footer";
 import { Link } from 'react-router-dom';
 
 export default function About() {
@@ -134,6 +135,7 @@ export default function About() {
                 </center>
                 <br />
             </div>
+            <Footer />
         </>
     );
 }

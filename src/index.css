@@ -15,7 +15,7 @@ h1 {
   font-size: 50px !important;
   color: lightgray;
   font-weight: 500 !important;
-  
+
 }
 
 h2 {
@@ -103,4 +103,9 @@ body {
   background-color: #00000085;
   color: white;
   border-width: 0px;
+}
+
+f1 {
+  font-size: 20px;
+  color: lightgrey;
 }
