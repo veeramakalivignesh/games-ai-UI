@@ -15,18 +15,24 @@ h1 {
   font-size: 50px !important;
   color: lightgray;
   font-weight: 500 !important;
-  /* text-shadow: 0 3px gray; */
-  
+
 }
 
 h2 {
-  margin-top: 0;
-  font-size: 20px;
+  font-family: 'Rouge Script', cursive;
+  margin-top: 0 !important;
+  font-size: 40px !important;
+  color: whitesmoke;
+  font-weight: 500 !important;
 }
 
 h3 {
-  margin-top: 0;
-  font-size: 18px;
+  font-family: 'Rouge Script';
+  margin-top: 0 !important;
+  font-size: 30px !important;
+  color: whitesmoke;
+  font-weight: 500 !important;
+  font-style: italic;
 }
 
 h4 {
@@ -46,6 +52,12 @@ h6 {
 
 code {
   font-size: 1.2em;
+}
+
+p {
+  font-size: 20px;
+  color: lightgrey;
+  font-style: italic;
 }
 
 ul {
@@ -70,4 +82,30 @@ body {
 
 .status {
   margin-bottom: 10px;
+}
+
+.button-common {
+  height: 50px;
+  width: 200px;
+  background-color: rgba(211, 211, 211, 0.689);
+  margin-top: 10px;
+  border-color: black;
+  border-style: solid;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button-common:hover {
+  background-color: #00000085;
+  color: white;
+  border-width: 0px;
+}
+
+f1 {
+  font-size: 20px;
+  color: lightgrey;
 }
