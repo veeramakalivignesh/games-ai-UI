@@ -1,5 +1,5 @@
 {
     "cannon": {
-        "bot_server_url": "http://localhost:8000"
+        "bot_server_url": "http://ec2-54-210-171-166.compute-1.amazonaws.com:8000"
     } 
 }
