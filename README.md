@@ -5,7 +5,7 @@ This is a prototype web application built with react js to provide UI for strate
 
 The AI itself runs in the backend web service - https://github.com/cant12/games-ai
 
-You can find the most recent version at http://play.gamesai.co.in/
+You can find the most recent version at http://play.gamesai.co.in
 
 ## How do I set up?
 Its simple! 
