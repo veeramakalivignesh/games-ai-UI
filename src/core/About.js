@@ -6,7 +6,7 @@ export default function About() {
     return (
         <>
             <Header />
-            <div className="p-1 text-left" style={{ marginTop: "50px", marginLeft: "300px", marginRight: "300px" }}>
+            <div className="p-1 text-left" style={{ marginTop: "50px", marginLeft: "200px", marginRight: "200px" }}>
                 <h2>Games AI</h2>
                 <p>
                     Bored and wanna play against an AI? You are in the right place.
