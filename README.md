@@ -3,7 +3,7 @@
 ## What is it?
 This is a prototype web application built with react js to provide UI for strategy games that could be played against an AI.
 
-The AI itself runs in the backend web service - https://github.com/cant12/games-ai-UI
+The AI itself runs in the backend web service - https://github.com/cant12/games-ai
 
 You can find the most recent version at http://play.gamesai.co.in/
 
