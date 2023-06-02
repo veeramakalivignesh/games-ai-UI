@@ -128,6 +128,54 @@ export default function About() {
                         </li>
                     </ul>
                 </p>
+                <h3>User Interface</h3>
+                <p>
+                    <ul>
+                        <li>
+                            <b>Soldier Move</b> - Clicking a soldier will create black dots in squares to which it can be moved.
+                            Click on the respective black dot to move the soldier there.
+                            <center>
+                                <br />
+                                <img
+                                    src="images/soldier_move_ui.png"
+                                    alt="Cannon Move"
+                                    width="300"
+                                    height="300"
+                                />
+                            </center>
+                            <br />
+                        </li>
+                        <li>
+                            <b>Cannon Move</b> - Moving a cannon one step forward is equivalent to moving the rear soldier to the front 
+                            of the cannon. So choosing a soldier which is at an end of a cannon will create a black dot at the other end.
+                            Choosing this square will move the cannon one step in that direction.
+                            <center>
+                                <br />
+                                <img
+                                    src="images/cannon_move_ui.png"
+                                    alt="Cannon Move"
+                                    width="300"
+                                    height="300"
+                                />
+                            </center>
+                            <br />
+                        </li>
+                        <li>
+                            <b>Cannon Shot</b> - Clicking any of the soldiers in a cannon will create red dots on squares where cannon 
+                            shots can be fired. Click on the respective black dot to fire a shot there.
+                            <center>
+                                <br />
+                                <img
+                                    src="images/cannon_shot_ui.png"
+                                    alt="Cannon Move"
+                                    width="300"
+                                    height="300"
+                                />
+                            </center>
+                            <br />
+                        </li>
+                    </ul>
+                </p>
                 <center>
                     <Link to="/cannon">
                         <button className='button-common'> Play </button>
