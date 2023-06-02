@@ -16,17 +16,6 @@ class CannonUtils extends GameUtils {
     static NUM_ROWS;
     static NUM_COLUMNS;
 
-    static TEMP_GAME_STATE = [
-        ['Tw', 'E', 'Tw', 'E', 'Tw', 'E', 'Tw', 'E'],
-        ['E', 'E', 'E', 'E', 'E', 'W', 'E', 'E'],
-        ['E', 'E', 'B', 'E', 'E', 'W', 'E', 'E'],
-        ['E', 'E', 'E', 'E', 'E', 'W', 'W', 'W'],
-        ['E', 'E', 'B', 'B', 'E', 'E', 'E', 'W'],
-        ['E', 'E', 'B', 'B', 'B', 'E', 'E', 'E'],
-        ['E', 'E', 'E', 'E', 'B', 'E', 'E', 'E'],
-        ['E', 'Tb', 'E', 'Tb', 'E', 'Tb', 'E', 'E']
-    ];
-
     static setSize(numRows, numColumns) {
         CannonUtils.NUM_ROWS = numRows;
         CannonUtils.NUM_COLUMNS = numColumns;
@@ -88,7 +77,6 @@ class CannonUtils extends GameUtils {
         initialGameState.push(CannonUtils.getRow(['B', 'Tb'], CannonUtils.NUM_COLUMNS / 2));
 
         return initialGameState;
-        // return _.cloneDeep(CannonUtils.TEMP_GAME_STATE);
     }
 
     /**
