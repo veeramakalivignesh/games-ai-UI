@@ -106,7 +106,17 @@ body {
   border-width: 0px;
 }
 
-f1 {
-  font-size: 20px;
-  color: lightgrey;
+.footer {
+  background-color: #111;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
+.footer span {
+  font-size: 14px;
 }
