@@ -1,5 +1,5 @@
 {
     "cannon": {
-        "bot_server_url": "http://ec2-3-92-59-237.compute-1.amazonaws.com:8000"
+        "bot_server_url": "https://games-ai-70e56276e7c9.herokuapp.com"
     } 
 }
