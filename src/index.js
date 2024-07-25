@@ -8,13 +8,13 @@ import GameApp from "./core/GameApp";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/about",
     element: <About />,
   },
   {
-    path: "/cannon",
+    path: "/",
     element: <GameApp />,
-  },
+  }
 ]);
 
 const root = createRoot(document.getElementById("root"));

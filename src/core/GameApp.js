@@ -3,9 +3,12 @@ import GameBoard from './components/GameBoard/GameBoard';
 import Header from "./Header";
 import GameController from "./components/GameController/GameController";
 import GameUtils from './utils/GameUtils';
+import BotClient from './api/BotClient';
 import Footer from './Footer';
 
 export default function GameApp() {
+    const botClient = new BotClient();
+
     const [gameLog, setGameLog] = useState([]);
     const [savedGameLog, setSavedGameLog] = useState([]);
     const [isUnderReplay, setUnderReplay] = useState(false);
@@ -24,6 +27,10 @@ export default function GameApp() {
         setGameLog(newGameLog);
     }
 
+    useEffect(() => {
+        botClient.healthCheckServer();
+    }, []); 
+    
     useEffect(() => {
         if (gameCondition === GameUtils.GAME_CONDITION.OFF) {
             reset();

@@ -1,3 +1,6 @@
+import axios from "axios";
+import config from "../../resources/config.json";
+
 /**
  * This is a super class for bot api clients
  * Any class that extends this must implement the below functions
@@ -9,8 +12,23 @@
 
 class BotClient {
 
+    static SERVER_URL = config.cannon.bot_server_url;
+
     constructor() { }
 
+    healthCheckServer = async () => {
+        const response = await axios({
+            method: 'get',
+            url: BotClient.SERVER_URL + '/health',
+        }).catch((err) => {
+            if (err.response) {
+                alert("Server responded with a " + err.response.status + " bad response!");
+            } else {
+                alert("Server is offline!")
+            }
+        });
+    }
+    
     /**
      * calls backend api to fetch the primary bot move
      * 
