@@ -6,7 +6,7 @@ import GameUtils from './utils/GameUtils';
 import BotClient from './api/BotClient';
 import Footer from './Footer';
 
-export default function GameApp() {
+export default function GameApp({gameName}) {
     const botClient = new BotClient();
 
     const [gameLog, setGameLog] = useState([]);
@@ -67,8 +67,14 @@ export default function GameApp() {
             alert(alertMessage);
         }, 100);
     }, [gameCondition]);
+    
+    var gameTitle = ""
+    if (gameName === GameUtils.GAME_NAME.CANNON ){
+        gameTitle = "Game of Cannons";
+    } else if (gameName === GameUtils.GAME_NAME.ABALONE ) {
+        gameTitle = "Abalone"
+    }
 
-    const gameTitle = "Game of Cannons";
     return (
         <>
             <Header />
@@ -89,6 +95,7 @@ export default function GameApp() {
                     setGameCondition={setGameCondition}
                     addMoveLog={addMoveLog}
                     resetParent={reset}
+                    gameName={gameName}
                 />
                 <GameController
                     gameLog={gameLog}

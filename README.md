@@ -19,7 +19,7 @@ cp src/resources/config-local.json src/resources/config.json
 Install node dependencies and start the server
 ```
 npm install
-npm start
+npm start:dev
 ```
 
 **Note**: Its preferable to have node version 16 or greater.

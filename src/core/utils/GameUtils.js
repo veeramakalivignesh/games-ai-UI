@@ -27,6 +27,11 @@ class GameUtils {
         BOT_BOT: "BOT_BOT"
     };
 
+    static GAME_NAME = {
+        CANNON: "CANNON",
+        ABALONE: "ABALONE"
+    }
+
     static isGameOverCondition(gameCondition) {
         return (
             gameCondition === this.GAME_CONDITION.WHITE_WINS ||

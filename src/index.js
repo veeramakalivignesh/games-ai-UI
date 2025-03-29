@@ -5,6 +5,7 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import About from "./core/About.js";
 import GameApp from "./core/GameApp";
+import GameUtils from './core/utils/GameUtils';
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <GameApp />,
+    element: <GameApp gameName = {GameUtils.GAME_NAME.CANNON}/>,
+  },
+  {
+    path: "/abalone",
+    element: <GameApp gameName = {GameUtils.GAME_NAME.ABALONE}/>,
   }
 ]);
 

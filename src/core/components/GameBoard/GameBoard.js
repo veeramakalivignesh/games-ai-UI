@@ -3,6 +3,8 @@ import CannonUtils from '../../../modules/cannon/utils/CannonUtils';
 import CannonBotClient from '../../../modules/cannon/api/CannonBotClient';
 import Cannon from '../../../modules/cannon/components/Cannon';
 import GameUtils from '../../utils/GameUtils';
+import Abalone from '../../../modules/abalone/components/Abalone';
+import AbaloneUtils from '../../../modules/abalone/utils/AbaloneUtils';
 var _ = require('lodash');
 
 /**
@@ -12,8 +14,8 @@ var _ = require('lodash');
  * @author cant12
  */
 
-export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGameCondition, addMoveLog, resetParent }) {
-    const gameUtils = new CannonUtils();
+export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGameCondition, addMoveLog, resetParent, gameName }) {
+    const gameUtils = gameName === GameUtils.GAME_NAME.CANNON ? new CannonUtils(): new AbaloneUtils();
     const botClient = new CannonBotClient();
 
     const [gameState, setGameState] = useState(gameUtils.getInitialGameState());
@@ -171,15 +173,29 @@ export default function GameBoard({ gameCondition, savedGameLog, gameMode, setGa
         }
     }, [replayCounter]);
 
-    return (
-        <Cannon
-            gameState={gameState}
-            guideState={guideState}
-            isBlackTurn={isBlackTurn}
-            gameCondition={gameCondition}
-            setGameState={setGameState}
-            setGuideState={setGuideState}
-            executeMove={executeMove}
-        />
-    );
+    if (gameName == GameUtils.GAME_NAME.CANNON) {
+        return (
+            <Cannon
+                gameState={gameState}
+                guideState={guideState}
+                isBlackTurn={isBlackTurn}
+                gameCondition={gameCondition}
+                setGameState={setGameState}
+                setGuideState={setGuideState}
+                executeMove={executeMove}
+            />
+        );
+    } else if (gameName == GameUtils.GAME_NAME.ABALONE) {
+        return (
+            <Abalone
+                gameState={gameState}
+                guideState={guideState}
+                isBlackTurn={isBlackTurn}
+                gameCondition={gameCondition}
+                setGameState={setGameState}
+                setGuideState={setGuideState}
+                executeMove={executeMove}
+            />
+        );
+    }
 }
