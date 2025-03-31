@@ -1,0 +1,117 @@
+.hexagon {
+    position: relative;
+    border: 1px solid;
+    width: 75px;
+    height: 43px; /* height is approximately width * 0.577 for regular hexagon */
+    background-color: #B0B0B0;
+    margin: 21.5px 0; /* margin top and bottom is height/2 */
+    display: inline-block;
+    margin-right: -1px;
+    border-color: #505050;
+  }
+  
+.hexagon:before,
+.hexagon:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    border-left: 37.5px solid transparent; /* width/2 */
+    border-right: 37.5px solid transparent; /* width/2 */
+    left: 0;
+}
+
+.hexagon:before {
+    bottom: 100%;
+    border-bottom: 21.5px solid #B0B0B0; /* height/2 */
+}
+
+.hexagon:after {
+    top: 100%;
+    border-top: 21.5px solid #B0B0B0; /* height/2 */
+}
+
+.transparent.hexagon {
+    background-color: transparent;
+    border: 0px solid;
+}
+
+.transparent.hexagon:before {
+    border-bottom-color: transparent;
+}
+
+.transparent.hexagon:after {
+    border-top-color: transparent;
+}
+
+.dark.hexagon {
+    background-color: #caa671;
+    border: 1px solid;
+}
+
+.dark.hexagon:before {
+    border-bottom-color: #caa671;
+}
+
+.dark.hexagon:after {
+    border-top-color: #caa671;
+}
+
+.light.hexagon {
+    background-color: #c5bda3;
+    border: 1px solid;
+    
+}
+
+.light.hexagon:before {
+    border-bottom-color: #c5bda3;
+}
+
+.light.hexagon:after {
+    border-top-color: #c5bda3;
+}
+
+
+.offset-hor{
+    margin-left: 37.5px;
+    margin-top: -21.5px;
+}
+
+.offset-ver{
+    margin-top: -21.5px;
+}
+
+.circle {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: 0px;
+    border-radius: 50%;
+    align-items: center;
+}
+
+.black {
+    background-color: rgb(25, 25, 25);
+}
+
+.white {
+    background-color: rgb(230, 230, 230);
+}
+
+.trans {
+    background-color: transparent;
+}
+
+.black-selected {
+    background-color: transparent;
+    background: radial-gradient(#B0B0B0, black);
+}
+
+.white-selected {
+    background-color: transparent;
+    background: radial-gradient(#B0B0B0, white);
+}
+
+.selected {
+    background-color: #d3d3d356;
+    border-style: inset;
+}
