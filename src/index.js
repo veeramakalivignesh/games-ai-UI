@@ -14,11 +14,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <GameApp gameName = {GameUtils.GAME_NAME.CANNON}/>,
+    element: <GameApp key={GameUtils.GAME_NAME.CANNON} gameName = {GameUtils.GAME_NAME.CANNON}/>,
   },
   {
     path: "/abalone",
-    element: <GameApp gameName = {GameUtils.GAME_NAME.ABALONE}/>,
+    element: <GameApp key={GameUtils.GAME_NAME.ABALONE} gameName = {GameUtils.GAME_NAME.ABALONE}/>,
   }
 ]);
 

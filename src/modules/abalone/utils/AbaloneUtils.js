@@ -16,11 +16,9 @@ class AbaloneUtils extends GameUtils {
     static EDGE_SIZE = 5;
     static directions = [[1,1], [0,2], [1,-1], [-1,1], [0,-2], [-1,-1]]
 
-    // static isPositionValid(position, gameState) {
-    //     const gridSize = 2*AbaloneUtils.EDGE_SIZE - 1
-    //     return (position[0] >= 0 && position[0] < gridSize &&
-    //         position[1] >= 0 && position[1] < gridSize && gameState[position[0]][position[1]] !== 'F');
-    // }
+    static setSize(size) {
+        AbaloneUtils.EDGE_SIZE = size;
+    }
 
     static isPositionValid(position, transformed=false) {
         let originalPosition = position

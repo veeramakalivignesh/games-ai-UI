@@ -12,6 +12,9 @@ export default function Header() {
                     <Link to="/">
                         <a className="nav-item nav-link">Cannon</a>
                     </Link>
+                    <Link to="/abalone">
+                        <a className="nav-item nav-link">Abalone</a>
+                    </Link>
                     <a className="nav-item nav-link" href="https://github.com/cant12/games-ai-UI">Github</a>
                 </div>
             </nav>

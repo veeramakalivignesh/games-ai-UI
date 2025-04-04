@@ -2,15 +2,15 @@ import "./Abalone.css";
 
 function Piece({ isReal, isBlack, selected }) {
 
-    let pieceClass = "circle";
+    let pieceClass;
     if (isReal) {
         if (isBlack) {
-            pieceClass = selected ? 'circle black black-selected' : 'circle black';
+            pieceClass = selected ? 'piece piece-black piece-black-selected' : 'piece piece-black';
         } else {
-            pieceClass = selected ? 'circle white white-selected' : 'circle white';
+            pieceClass = selected ? 'piece piece-white piece-white-selected' : 'piece piece-white';
         }
     } else {
-        pieceClass = "circle trans"
+        pieceClass = "piece trans"
     }
 
     return (

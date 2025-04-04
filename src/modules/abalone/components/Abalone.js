@@ -3,6 +3,7 @@ import "./Abalone.css";
 import AbaloneUtils from '../utils/AbaloneUtils';
 import GameUtils from "../../../core/utils/GameUtils";
 import Hexagon from './AbaloneComponents';
+import { FaHeart } from 'react-icons/fa';
 var _ = require('lodash');
 
 /**
@@ -14,6 +15,25 @@ var _ = require('lodash');
 
 export default function Abalone({ gameState, guideState, isBlackTurn, gameCondition, setGameState, setGuideState, executeMove}) {
     const abaloneUtils = new AbaloneUtils();
+    const [gameSize, setGameSize] = useState(5);
+    
+    useEffect(() => {
+        AbaloneUtils.setSize(gameSize);
+        setGameState(abaloneUtils.getInitialGameState())
+        setGuideState(abaloneUtils.getInitialGuideState())
+    }, [gameSize]);
+
+    const sizeButtonClick = {
+        FOUR: () => {
+            setGameSize(4);
+        },
+        FIVE: () => {
+            setGameSize(5);
+        },
+        SIX: () => {
+            setGameSize(6);
+        }
+    };
 
     const isPieceCurrentPlayer = (position) => {
         return (isBlackTurn && gameState[position[0]][position[1]] === 'B') ||
@@ -47,6 +67,7 @@ export default function Abalone({ gameState, guideState, isBlackTurn, gameCondit
     for (let i = 0; i < gridSize; i++) {
         const hexagons = []
         for (let j = 0; j < gridSize; j++) {
+            console.log(guideState)
             let isPieceSelected = guideState.selectedPositions.some(pos => pos[0]===i && pos[1]===j);
             hexagons.push(
                 <Hexagon
@@ -67,9 +88,53 @@ export default function Abalone({ gameState, guideState, isBlackTurn, gameCondit
         );
     }
 
+    const eliminations = abaloneUtils.getEliminationCounts(gameState)
+    const life = {
+        'B': gameSize + 1 - eliminations['B'],
+        'W': gameSize + 1 - eliminations['W']
+    }
+
+    const boardClass = (gameSize%2===0) ? 'board-even': 'board-odd';
     return (
         <div style={{ verticalAlign: "middle" }}>
-            {rows}
+            <div className="hexagon-container">
+                <div className="hexagon-border outer"></div>
+                <div className="hexagon-border"></div>
+                <div className={boardClass}>
+                    {rows}
+                </div>
+            </div>
+            <div style={{display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop:'20px'
+                }}>
+
+                <div className='info-container info-life'>
+                    <FaHeart style={{color: "gray"}} /> &nbsp;<span style={{color: "rgb(230, 230, 230)"}}>{life['W']}</span>&nbsp;<span style={{color: "black"}}>{life['B']}</span>
+                </div>
+                    
+                <div className='info-container'>
+                    <button
+                        className={(gameSize===4) ? 'box box-abalone selected' : 'box box-abalone'}
+                        disabled={gameCondition !== GameUtils.GAME_CONDITION.OFF}
+                        onClick={sizeButtonClick.FOUR}>
+                        4
+                    </button>
+                    <button
+                        className={(gameSize===5) ? 'box box-abalone selected' : 'box box-abalone'}
+                        disabled={gameCondition !== GameUtils.GAME_CONDITION.OFF}
+                        onClick={sizeButtonClick.FIVE}>
+                        5
+                    </button>
+                    <button
+                        className={(gameSize===6) ? 'box box-abalone selected' : 'box box-abalone'}
+                        disabled={gameCondition !== GameUtils.GAME_CONDITION.OFF}
+                        onClick={sizeButtonClick.SIX}>
+                        6
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
